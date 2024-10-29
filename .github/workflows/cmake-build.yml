@@ -34,3 +34,20 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.4.3
+      with:
+      
+        # Artifact name
+        name: base_app
+
+        # A file, directory or wildcard pattern that describes what to upload
+        path: build/base_app
+
+        # The desired behavior if no files are found using the provided path.
+        if-no-files-found: error
+
+        # Duration after which artifact will expire in days. 0 means using default retention.
+        retention-days: 1
+          
+
