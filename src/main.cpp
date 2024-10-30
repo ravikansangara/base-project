@@ -8,7 +8,7 @@ int main()
 {
     std::cout << "Hello, World!" << std::endl;
 
-    helper_function_one();
+    helper_function_on();
 
     libone_function();
 
