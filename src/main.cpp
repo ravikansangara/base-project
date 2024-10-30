@@ -25,14 +25,6 @@ void example_memory_leak()
     // No call to delete[] ptr, which CodeQL will detect as a memory leak
 }
 
-void example_sql_injection(const std::string& userInput)
-{
-    std::string query = "SELECT * FROM users WHERE username = '" + userInput + "';";
-
-    // CodeQL will flag this as a potential SQL injection risk
-    std::cout << "Executing query: " << query << std::endl;
-}
-
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
@@ -47,7 +39,6 @@ int main()
     example_buffer_overflow();
     example_uninitialized_variable();
     example_memory_leak();
-    example_sql_injection("Alice");
 
     return 0;
 }
