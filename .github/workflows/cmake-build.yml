@@ -11,7 +11,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  JF_URL: ${{ secrets.JF_URL }}
+  JF_URL: "http://localhost:8081"
   JF_USER: ${{ secrets.JF_USER }}
   JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
   JF_SERVER_ID: "artifactory"
@@ -64,4 +64,4 @@ jobs:
     #     jfrog c add ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
 
     - name: Upload to JFrog Artifactory
-      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "http://${{ env.JF_URL }}/github-demo/1.0.0/"
+      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "${{ env.JF_URL }}/github-demo/1.0.0/"
