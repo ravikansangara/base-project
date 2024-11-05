@@ -58,9 +58,11 @@ jobs:
       with:
         version: 'latest'
 
+    - name: Configure JFrog CLI
+      run: jfrog rt config artifactory-server --url=${{ env.JF_URL }} --user=${{ env.JF_USER }} --password=${{ env.JF_PASSWORD }} --interactive=false
+
     - name: Ping Artifactory
       run: jfrog rt ping
 
     - name: Upload to JFrog Artifactory using JFrog CLI
-      run: |
-        jfrog rt upload "build/base_app" "github-demo/1.0.0/"
+      run: jfrog rt upload "build/base_app" "github-demo/1.0.0/"
