@@ -63,6 +63,4 @@ jobs:
       run: |
         jfrog c add ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
         jf c use ${{ env.JF_SERVER_ID }}
-
-    - name: Upload to JFrog Artifactory
-      run: jf rt upload "build/base_app" "github-demo/1.0.0/"
+        jf rt upload "build/base_app" "github-demo/1.0.0/"
