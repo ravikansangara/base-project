@@ -59,7 +59,7 @@ jobs:
         version: 'latest'
 
     - name: Configure JFrog CLI
-      run: jfrog rt config artifactory-server --url=${{ env.JF_URL }} --user=${{ env.JF_USER }} --password=${{ env.JF_PASSWORD }} --interactive=false
+      run: jfrog config add artifactory-server --url=${{ env.JF_URL }} --user=${{ env.JF_USER }} --password=${{ env.JF_PASSWORD }} --interactive=false
 
     - name: Ping Artifactory
       run: jfrog rt ping
