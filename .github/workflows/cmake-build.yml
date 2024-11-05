@@ -11,6 +11,9 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  JF_URL: ${{ secrets.JF_URL }}
+  JF_USER: ${{ secrets.JF_USER }}
+  JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
 
 jobs:
   build:
@@ -51,11 +54,13 @@ jobs:
         retention-days: 1
 
     - name: Set up JFrog CLI
-      uses: jfrog/setup-jfrog-cli@v4.4.1
+      uses: jfrog/setup-jfrog-cli@v4
+      with:
+        version: 'latest'
 
-    - name: Configure JFrog CLI
-      run: jfrog config add artifactory-server --url ${{ vars.ARTIFACTORY_URL }} --user ${{ vars.ARTIFACTORY_USER }} --password ${{ vars.ARTIFACTORY_PASSWORD }} --interactive=false
+    - name: Ping Artifactory
+      run: jfrog rt ping
 
-    - name: Upload to Artifactory using JFrog CLI
-      run: jfrog rt upload "build/base_app" "github-demo/1.0.0/"
-
+    - name: Upload to JFrog Artifactory using JFrog CLI
+      run: |
+        jfrog rt upload "build/base_app" "github-demo/1.0.0/"
