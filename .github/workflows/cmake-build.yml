@@ -56,5 +56,11 @@ jobs:
       with:
         version: 'latest'
 
+    - name: Print JFrog vars
+      run: |
+          echo "JF_URL=${{ vars.JF_URL }}"
+          echo "JF_USER=${{ secrets.JF_USER }}"
+          echo "JF_PASSWORD=${{ secrets.JF_PASSWORD }}"
+          
     - name: Upload to JFrog Artifactory
       run: jf rt upload "build/base_app" "github-demo/1.0.0/" --url=${{ vars.JF_URL }} --user=${{ secrets.JF_USER }} --password=${{ secrets.JF_PASSWORD }}
