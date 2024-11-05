@@ -11,7 +11,10 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-
+  JF_URL: ${{ vars.JF_URL }}
+  JF_USER: ${{ secrets.JF_USER }}
+  JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+  JF_SERVER_ID: "artifactory"
 
 jobs:
   build:
@@ -27,7 +30,7 @@ jobs:
         submodules: recursive  # Initialize and update submodules recursively
 
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # Configure CMake in a 'build' subdirectory. CMAKE_BUILD_TYPE is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
@@ -56,11 +59,9 @@ jobs:
       with:
         version: 'latest'
 
-    - name: Print JFrog vars
+    - name: Configure JFrog CLI
       run: |
-          echo "JF_URL=${{ vars.JF_URL }}"
-          echo "JF_USER=${{ secrets.JF_USER }}"
-          echo "JF_PASSWORD=${{ secrets.JF_PASSWORD }}"
-          
+        jfrog rt config ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
+
     - name: Upload to JFrog Artifactory
-      run: jf rt upload "build/base_app" "github-demo/1.0.0/" --url=${{ vars.JF_URL }} --user=${{ secrets.JF_USER }} --password=${{ secrets.JF_PASSWORD }}
+      run: jf rt upload "build/base_app" "github-demo/1.0.0/"
