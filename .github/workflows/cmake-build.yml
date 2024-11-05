@@ -54,13 +54,14 @@ jobs:
         # Duration after which artifact will expire in days. 0 means using default retention.
         retention-days: 1
 
-    - name: Set up JFrog CLI
-      uses: jfrog/setup-jfrog-cli@v4
-      with:
-        version: 'latest'
+    # - name: Set up JFrog CLI
+    #   uses: jfrog/setup-jfrog-cli@v4
+    #   with:
+    #     version: 'latest'
 
-    - name: Configure JFrog CLI
-      run: |
-        jfrog c add ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
-        jf c use ${{ env.JF_SERVER_ID }}
-        jf rt upload "build/base_app" "github-demo/1.0.0/"
+    # - name: Configure JFrog CLI
+    #   run: |
+    #     jfrog c add ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
+
+    - name: Upload to JFrog Artifactory
+      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "http://${{ env.JF_URL }}/github-demo/1.0.0/"
