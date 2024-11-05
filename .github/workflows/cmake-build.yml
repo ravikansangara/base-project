@@ -55,16 +55,6 @@ jobs:
       uses: jfrog/setup-jfrog-cli@v4
       with:
         version: 'latest'
-      env:
-          JF_SERVER_ID: "artifactory"
-          JF_URL: ${{ vars.JF_URL }}
-          JF_USER: ${{ secrets.JF_USER }}
-          JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
-
-    - run: |
-
-          # Set the JFrog server configuration
-          jf c add ${{ env.JF_SERVER_ID }} --url=${{ env.JF_URL }} --user=${{ env.JF_USER }} --password=${{ env.JF_PASSWORD }} --interactive=false
 
     - name: Upload to JFrog Artifactory
-      run: jf rt upload "build/base_app" "github-demo/1.0.0/" 
+      run: jf rt upload "build/base_app" "github-demo/1.0.0/" --url=${{ vars.JF_URL }} --user=${{ secrets.JF_USER }} --password=${{ secrets.JF_PASSWORD }}
