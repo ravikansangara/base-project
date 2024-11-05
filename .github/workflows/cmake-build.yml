@@ -49,5 +49,13 @@ jobs:
 
         # Duration after which artifact will expire in days. 0 means using default retention.
         retention-days: 1
-          
+
+    - name: Set up JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v4.4.1
+
+    - name: Configure JFrog CLI
+      run: jfrog config add artifactory-server --url ${{ vars.ARTIFACTORY_URL }} --user ${{ vars.ARTIFACTORY_USER }} --password ${{ vars.ARTIFACTORY_PASSWORD }} --interactive=false
+
+    - name: Upload to Artifactory using JFrog CLI
+      run: jfrog rt upload "build/base_app" "github-demo/1.0.0/"
 
