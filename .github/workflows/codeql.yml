@@ -13,9 +13,9 @@ env:
 
 jobs:
   analyze:
-    if: false
+    # if: false
     name: Analyze Code
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, codeql]
 
     permissions:
       # Allows GitHub Actions to upload analysis results to the Security tab
