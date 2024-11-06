@@ -19,12 +19,6 @@ void example_uninitialized_variable()
     std::cout << x << std::endl;  // CodeQL will flag the use of an uninitialized variable
 }
 
-void example_memory_leak()
-{
-    int* ptr = new int[10];
-    // No call to delete[] ptr, which CodeQL will detect as a memory leak
-}
-
 int main()
 {
     std::cout << "Hello, World!" << std::endl;
@@ -38,7 +32,6 @@ int main()
     // FUnctions to test CodeQL quality
     example_buffer_overflow();
     example_uninitialized_variable();
-    example_memory_leak();
 
     return 0;
 }
