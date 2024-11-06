@@ -63,4 +63,4 @@ jobs:
         jf c add artifactory --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --overwrite=true --interactive=false
 
     - name: Upload to JFrog Artifactory
-      run: jf rt upload "build/base_app" "github-demo/run-$GITHUB_RUN_NUMBER/" --flat=true --props --target-props "version=1.0.0;build-number=$GITHUB_RUN_NUMBER;commit-hash=$GITHUB_SHA;branch=$GITHUB_REF_NAME;uploaded-by=github-actions"
+      run: jf rt upload "build/base_app" "github-demo/run-$GITHUB_RUN_NUMBER/" --flat=true --target-props "version=1.0.0;build-number=$GITHUB_RUN_NUMBER;commit-hash=$GITHUB_SHA;branch=$GITHUB_REF_NAME;uploaded-by=github-actions"
