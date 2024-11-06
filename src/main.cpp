@@ -33,5 +33,5 @@ int main()
     example_buffer_overflow();
     example_uninitialized_variable();
 
-    return 0;
+    return 0
 }
