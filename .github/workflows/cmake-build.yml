@@ -11,14 +11,16 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+
+  # Jfrog server URL
   JF_URL: "http://172.17.0.1:8081/artifactory"
+
+  # Jfrog authentication credentials
   JF_USER: admin
   JF_PASSWORD: Matrix@123
 
 jobs:
-  build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
+  build_and_deploy:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: self-hosted
 
@@ -26,16 +28,14 @@ jobs:
     - name: Checkout repository with submodules
       uses: actions/checkout@v4
       with:
-        submodules: recursive  # Initialize and update submodules recursively
+        # Initialize and update submodules recursively
+        submodules: recursive
 
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. CMAKE_BUILD_TYPE is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
 
     - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.4.3
@@ -63,4 +63,4 @@ jobs:
     #     jfrog c add ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
 
     - name: Upload to JFrog Artifactory
-      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "${{ env.JF_URL }}/github-demo/1.0.0/"
+      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "${{ env.JF_URL }}/github-demo/run-${{ env.GITHUB_RUN_NUMBER }}/"
