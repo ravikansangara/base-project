@@ -22,7 +22,7 @@ env:
 jobs:
   build_and_deploy:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-    runs-on: self-hosted
+    runs-on: [self-hosted, build]
 
     steps:
     - name: Checkout repository with submodules
