@@ -60,7 +60,7 @@ jobs:
 
     - name: Configure JFrog CLI
       run: |
-        jfrog c add artifactory --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
+        jf c add artifactory --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --overwrite=true --interactive=false
 
     - name: Upload to JFrog Artifactory
       run: jf rt upload "build/base_app" "github-demo/run-$GITHUB_RUN_NUMBER/"
