@@ -13,13 +13,13 @@ on:
         description: 'Deployment environment'
         required: true
         default: 'development'
-        
+
 env:
   MY_ENV_VAR: "hello world"
 
 jobs:
   test-vars:
-    runs-on: [self-hosted, codeql]
+    runs-on: [self-hosted, build]
 
     steps:
 
