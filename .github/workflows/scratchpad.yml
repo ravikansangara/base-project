@@ -2,6 +2,28 @@ name: Github Actions Scratchpad
 
 on:
   workflow_dispatch:  # Allows manual triggering
+    inputs:
+
+      version:
+        description: 'Version to deploy'
+        required: true
+
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'development'
+        options:
+          - development
+          - staging
+          - production
+
+      enable_feature:
+        description: 'Enable experimental feature'
+        required: true
+        default: 'false'
+        options:
+          - 'true'
+          - 'false'
 
 env:
   MY_ENV_VAR: "hello world"
