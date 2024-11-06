@@ -63,4 +63,4 @@ jobs:
     #     jfrog c add ${{ env.JF_SERVER_ID }} --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --interactive=false
 
     - name: Upload to JFrog Artifactory
-      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "${{ env.JF_URL }}/github-demo/run-${{ github.run.number }}/"
+      run: curl -u ${{ env.JF_USER }}:${{ env.JF_PASSWORD }} -T "build/base_app" "${{ env.JF_URL }}/github-demo/run-$GITHUB_RUN_NUMBER/"
