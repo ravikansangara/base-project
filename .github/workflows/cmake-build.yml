@@ -20,6 +20,10 @@ env:
   JF_USER: ${{ secrets.JF_USER }}
   JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
 
+  # Jfrog artifact upload repository path
+  LOCAL_ATRIFACT_PATH="build/base_app"
+  JF_ARTIFACT_UPLOAD_REPO_PATH="product-prod-release/product-v$GITHUB_RUN_NUMBER/"
+
 jobs:
   build_and_deploy:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -64,4 +68,4 @@ jobs:
         jf c add artifactory --url="${{ env.JF_URL }}" --user="${{ env.JF_USER }}" --password="${{ env.JF_PASSWORD }}" --overwrite=true --interactive=false
 
     - name: Upload to JFrog Artifactory
-      run: jf rt upload "build/base_app" "github-demo/run-$GITHUB_RUN_NUMBER/" --flat=true
+      run: jf rt upload "${{ env.LOCAL_ATRIFACT_PATH }}" "${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}" --flat=true
