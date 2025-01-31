@@ -21,8 +21,8 @@ env:
   JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
 
   # Jfrog artifact upload repository path
-  LOCAL_ATRIFACT_PATH="build/base_app"
-  JF_ARTIFACT_UPLOAD_REPO_PATH="product-prod-release/product-v$GITHUB_RUN_NUMBER/"
+  LOCAL_ATRIFACT_PATH: "build/base_app"
+  JF_ARTIFACT_UPLOAD_REPO_PATH: "product-prod-release/product-v$GITHUB_RUN_NUMBER/"
 
 jobs:
   build_and_deploy:
