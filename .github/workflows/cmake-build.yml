@@ -78,7 +78,7 @@ jobs:
         secure: true
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
-        subject: "Build $GITHUB_RUN_NUMBER successful!"
+        subject: "Build successful!"
         body: "A new artifact has been uploaded to ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}"
         to: "kansangara.ravi@gmail.com"
         from: "kansangara.ravi@gmail.com"
