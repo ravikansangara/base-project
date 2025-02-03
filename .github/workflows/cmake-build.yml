@@ -69,3 +69,16 @@ jobs:
 
     - name: Upload to JFrog Artifactory
       run: jf rt upload "${{ env.LOCAL_ATRIFACT_PATH }}" "${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}" --flat=true
+
+    - name: Send Email
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.GMAIL_USERNAME }}
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        subject: "Build $GITHUB_RUN_NUMBER successful!"
+        body: "A new artifact has been uploaded to ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}"
+        to: "kansangara.ravi@gmail.com"
+        from: "kansangara.ravi@gmail.com" 
+        secure: true
