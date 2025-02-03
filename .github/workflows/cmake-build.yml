@@ -6,8 +6,6 @@ on:
   workflow_dispatch:  # Allows manual triggering
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -79,6 +77,6 @@ jobs:
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
         subject: "Build successful!"
-        body: "A new artifact has been uploaded to ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}"
+        body: "A new artifact has been uploaded to Jfrog Artifactory."
         to: "kansangara.ravi@gmail.com"
         from: "kansangara.ravi@gmail.com"
