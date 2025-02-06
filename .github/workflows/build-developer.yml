@@ -6,11 +6,11 @@ name: Developer Build
 
 on:
   workflow_dispatch:  # Allows manual triggering for developers
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
+    inputs:
+      description: 'Software Version'
+      required: true
+      type: string
+
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
