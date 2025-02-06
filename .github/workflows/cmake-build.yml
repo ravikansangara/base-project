@@ -46,7 +46,7 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.4.3
       with:
-        name: my-product-package
+        name: ${{ env.SW_PACKAGE_NAME }}
         path: ${{ github.workspace }}/${{ env.SW_PACKAGE_NAME }}
         if-no-files-found: error
         retention-days: 1
