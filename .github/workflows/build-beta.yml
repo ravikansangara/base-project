@@ -1,11 +1,15 @@
-# This starter workflow is for a CMake project running on a single platform. There is a different starter workflow if you need cross-platform coverage.
-# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
-name: Build
+#---------------------------------------------------
+# Beta Build
+#---------------------------------------------------
+
+name: Beta Build
 
 on:
-  workflow_dispatch:  # Allows manual triggering
-  push:
-    branches: [ "main" ]
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'release/*'
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -19,8 +23,9 @@ env:
   JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
 
   # Jfrog artifact upload repository path
+  SOFTWARE_VERSION: "1.0.0"
   LOCAL_ATRIFACT_PATH: "build/base_app"
-  JF_ARTIFACT_UPLOAD_REPO_PATH: "product-prod-release/product-v$GITHUB_RUN_NUMBER/"
+  JF_ARTIFACT_UPLOAD_REPO_PATH: "product-staging-release/$SOFTWARE_VERSION/beta/product-v$GITHUB_RUN_NUMBER/"
 
 jobs:
   build_and_deploy:
@@ -76,7 +81,7 @@ jobs:
         #secure: true
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
-        subject: "Build successful!"
+        subject: "Alpha Build successful!"
         body: "A new artifact has been uploaded to Jfrog Artifactory."
         to: "kansangara.ravi@gmail.com"
         from: "kansangara.ravi@gmail.com"
