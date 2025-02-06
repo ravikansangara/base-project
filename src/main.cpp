@@ -17,8 +17,6 @@ int main()
 {
     std::cout << "Hello, World!" << std::endl;
 
-    std::cout << "Hello, World-2!" << std::endl;
-
     helper_function_one();
 
     libone_function();
