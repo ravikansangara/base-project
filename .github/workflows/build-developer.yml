@@ -5,11 +5,12 @@
 name: Developer Build
 
 on:
-  workflow_dispatch:  # Allows manual triggering for developers
+  workflow_dispatch:
     inputs:
-      description: 'Software Version'
-      required: true
-      type: string
+      version:
+        description: 'Software Version'
+        required: true
+        type: string
 
 
 env:
