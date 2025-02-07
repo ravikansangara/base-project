@@ -26,5 +26,5 @@ int main()
     // Functions to test CodeQL quality
     example_buffer_overflow();
 
-    return 0;
+    return 0
 }
