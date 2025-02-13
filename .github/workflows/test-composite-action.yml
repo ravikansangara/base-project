@@ -29,7 +29,7 @@ jobs:
         submodules: recursive
 
     - name: Upload Artifact to JFrog Artifactory
-      uses: ravikansangara/base-project/.github/actions/jfrog-upload-artifact
+      uses: ravikansangara/base-project/.github/actions/jfrog-upload-artifact@main
       with: 
         jf_url: ${{ env.JF_URL }}
         jf_username: ${{ env.JF_USER }}
