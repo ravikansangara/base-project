@@ -12,7 +12,7 @@ env:
   JF_ARTIFACT_UPLOAD_REPO_PATH: "product-prod-release/product-v${{ github.run_number }}/"
 
 jobs:
-  build_and_deploy:
+  jfrog_deploy:
     runs-on: [self-hosted, build]
 
     steps:
