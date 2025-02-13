@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+  push:
+    branches: [ "main" ]
+
+env:
+
+  # JFrog server URL
+  JF_URL: ${{ vars.JF_URL }}
+
+  # JFrog authentication credentials
+  JF_USER: ${{ secrets.JF_USER }}
+  JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+
+  # JFrog artifact upload repository path
+  LOCAL_ARTIFACT_PATH: "${{ github.workspace }}/README.md"
+  JF_ARTIFACT_UPLOAD_REPO_PATH: "product-prod-release/product-v${{ github.run_number }}/"
+
+jobs:
+  build_and_deploy:
+    runs-on: [self-hosted, build]
+
+    steps:
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Upload Artifact to JFrog Artifactory
+      uses: ravikansangara/base-project/.github/actions/jfrog-upload-artifact
+      with: 
+        jf_url: ${{ env.JF_URL }}
+        jf_username: ${{ env.JF_USER }}
+        jf_secret: ${{ env.JF_PASSWORD }}
+        local_artifact_path: ${{ env.LOCAL_ARTIFACT_PATH }}
+        artifact_upload_repo_path: ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}

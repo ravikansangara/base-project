@@ -1,0 +1,43 @@
+#---------------------------------------------------
+# Composite action (upload artifact to JFrog Artifactory)
+#---------------------------------------------------
+name: JFrog Upload Artifact
+description: Composite action to upload artifact to JFrog Artifactory
+inputs:
+  jf_url:
+    required: true
+    description: "Artifactory base URL"
+
+  jf_username:
+    required: true
+    description: "Artifactory Authentication Username"
+
+  jf_secret:
+    required: true
+    description: "Artifactory Authentication Password/Token"
+
+  local_artifact_path:
+    required: true
+    description: "Absolute path to local artifact"
+
+  artifact_upload_repo_path:
+    required: true
+    description: "Artifactory repository name to upload artifact"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v4
+      with:
+        version: 'latest'
+
+    - name: Configure JFrog CLI
+      run: |
+        jf c add artifactory --url="${{ inputs.jf_url }}" --user="${{ inputs.jf_username }}" --password="${{ inputs.jf_secret }}" --overwrite=true --interactive=false
+      shell: bash
+
+    - name: Upload Artifact to JFrog Artifactory
+      run: |
+        jf rt upload "${{ inputs.local_artifact_path }}" "${{ inputs.artifact_upload_repo_path }}" --flat=true
+      shell: bash
