@@ -1,4 +1,4 @@
-name: Build
+name: Test Composite Action
 
 on:
   workflow_dispatch:  # Allows manual triggering
