@@ -4,7 +4,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  build_and_deploy:
+  sample-job:
     runs-on: [self-hosted, build]
 
     steps:
