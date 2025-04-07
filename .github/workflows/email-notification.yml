@@ -24,7 +24,7 @@ jobs:
       id: prepare_body
       run: |
         echo "body<<EOF" >> $GITHUB_OUTPUT
-        cat ravikansangara/base-project/.github/actions/email-notification/workflow-success-template.html >> $GITHUB_OUTPUT
+        cat .github/actions/email-notification/workflow-success-template.html >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Send Email Notification
