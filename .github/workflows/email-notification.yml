@@ -10,7 +10,7 @@ env:
 
   TO: "kansangara.ravi@gmail.com"
   SUBJECT: "Workflow [Alpha Build] for Product [NVRX] Completed Successfully!"
-  BODY: "file://ravikansangara/base-project/.github/actions/email-notification/workflow-success-template.yml"
+  BODY: "file://ravikansangara/base-project/.github/actions/email-notification/workflow-success-template.html"
 
 jobs:
   email_notification:
