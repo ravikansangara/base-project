@@ -1,0 +1,41 @@
+#---------------------------------------------------
+# Composite action (Send Email Notification)
+#---------------------------------------------------
+name: Send Email Notification
+description: Composite action to send email notification to users
+inputs:
+
+  username:
+    required: true
+    description: "SMTP Account Username"
+
+  password:
+    required: true
+    description: "SMTP Account Password"
+    
+  to:
+    required: true
+    description: "To Field Email Adddress List"
+
+  subject:
+    required: true
+    description: "Email Notification Subject Line"
+
+  body:
+    required: true
+    description: "Email Notification Body"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Send Email Notification
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+        from: "kansangara.ravi@gmail.com"
+        to: ${{ inputs.to }}
+        subject: ${{ inputs.subject }}
+        body: ${{ inputs.body }}
