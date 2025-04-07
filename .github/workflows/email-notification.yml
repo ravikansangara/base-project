@@ -10,11 +10,22 @@ env:
 
   TO: "kansangara.ravi@gmail.com"
   SUBJECT: "Workflow [Alpha Build] for Product [NVRX] Completed Successfully!"
-  BODY: "file://ravikansangara/base-project/.github/actions/email-notification/workflow-success-template.html"
 
 jobs:
+
+  prepare_email_body:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Read HTML body from file
+        id: prepare_body
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          cat "$EMAIL_FILE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+  
   email_notification:
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository with submodules
@@ -29,4 +40,4 @@ jobs:
         password: ${{ secrets.GMAIL_PASSWORD }}
         to: ${{ env.TO }}
         subject: ${{ env.SUBJECT }}
-        body: ${{ env.BODY }}
+        body: ${{ steps.prepare_body.outputs.body }}
