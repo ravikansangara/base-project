@@ -39,3 +39,4 @@ runs:
         to: ${{ inputs.to }}
         subject: ${{ inputs.subject }}
         body: ${{ inputs.body }}
+        content_type: text/html  # This enables rendering HTML
