@@ -8,6 +8,15 @@ on:
         required: true
         default: 'kansangara.ravi@gmail.com'
 
+      status:
+        description: 'Notification Type'
+        required: true
+        default: 'success'
+        type: choice
+        options:
+          - success
+          - failure
+
 env:
   TO: ${{ github.event.inputs.to_addresses }}
   SUBJECT: "[SUCCESS] ${{ github.workflow }} #${{ github.run_number }}: Completed in [${{ github.repository }}]"
