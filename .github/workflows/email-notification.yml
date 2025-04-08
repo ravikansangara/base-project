@@ -16,11 +16,6 @@ on:
         options:
           - success
           - failure
-
-env:
-  TO: ${{ github.event.inputs.to_addresses }}
-  SUBJECT: "[SUCCESS] ${{ github.workflow }} #${{ github.run_number }}: Completed in [${{ github.repository }}]"
-
 jobs:
 
   email_notification:
@@ -32,12 +27,32 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Read HTML Body from file
-      id: prepare_success_body
+    - name: Prepare Email Subject & Body
+      id: prepare_email
       run: |
+
+        # -----------------------------------------------------------
+        # Prepare Subject
+        # -----------------------------------------------------------
+        if [ "${{ github.event.inputs.status }}" = "success" ]; then
+          SUBJECT=[SUCCESS] ${{ github.workflow }} #${{ github.run_number }} Completed in [${{ github.repository }}]
+        else
+          SUBJECT=[FAILURE] ${{ github.workflow }} #${{ github.run_number }} Failed to Complete in [${{ github.repository }}]
+        fi
+
+        echo "subject=${SUBJECT}" >> "$GITHUB_OUTPUT"
+
+        # -----------------------------------------------------------
+        # Prepare Body
+        # -----------------------------------------------------------
+        if [ "${{ github.event.inputs.status }}" = "success" ]; then
+          BODY_TEMPLATE_FILE=".github/actions/email-notification/workflow-success-template.html"
+        else
+           BODY_TEMPLATE_FILE=".github/actions/email-notification/workflow-fail-template.html"
+         fi
         {
           echo "body<<EOF"
-          cat .github/actions/email-notification/workflow-success-template.html
+          cat "$BODY_TEMPLATE_FILE"
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
 
@@ -46,24 +61,6 @@ jobs:
       with: 
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
-        to: ${{ env.TO }}
-        subject: ${{ env.SUBJECT }}
-        body: ${{ steps.prepare_success_body.outputs.body }}
-
-    - name: Read HTML Body from file
-      id: prepare_failure_body
-      run: |
-        {
-          echo "body<<EOF"
-          cat .github/actions/email-notification/workflow-fail-template.html
-          echo "EOF"
-        } >> "$GITHUB_OUTPUT"
-
-    - name: Send Email Notification
-      uses: ravikansangara/base-project/.github/actions/email-notification@main
-      with: 
-        username: ${{ secrets.GMAIL_USERNAME }}
-        password: ${{ secrets.GMAIL_PASSWORD }}
-        to: ${{ env.TO }}
-        subject: ${{ env.SUBJECT }}
-        body: ${{ steps.prepare_failure_body.outputs.body }}
+        to: ${{ github.event.inputs.to_addresses }}
+        subject: ${{ steps.prepare_email.outputs.subject }}
+        body: ${{ steps.prepare_email.outputs.body }}
