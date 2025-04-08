@@ -35,9 +35,9 @@ jobs:
         # Prepare Subject
         # -----------------------------------------------------------
         if [ "${{ github.event.inputs.status }}" = "success" ]; then
-          SUBJECT=[SUCCESS] ${{ github.workflow }} #${{ github.run_number }} Completed in [${{ github.repository }}]
+          SUBJECT="[SUCCESS] ${{ github.workflow }} #${{ github.run_number }} Completed in [${{ github.repository }}]"
         else
-          SUBJECT=[FAILURE] ${{ github.workflow }} #${{ github.run_number }} Failed to Complete in [${{ github.repository }}]
+          SUBJECT="[FAILURE] ${{ github.workflow }} #${{ github.run_number }} Failed to Complete in [${{ github.repository }}]"
         fi
 
         echo "subject=${SUBJECT}" >> "$GITHUB_OUTPUT"
