@@ -7,7 +7,7 @@ on:
 
 env:
   TO: "kansangara.ravi@gmail.com"
-  SUBJECT: "[SUCCESS] Workflow ${{ github.workflow }} - Run #${{ github.run_number }} in ${{ github.repository }} Completed"
+  SUBJECT: "[SUCCESS] ${{ github.workflow }}: Run #${{ github.run_number }} in ${{ github.repository }} Completed"
 
 jobs:
 
