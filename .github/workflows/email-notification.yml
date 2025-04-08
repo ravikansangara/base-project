@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 
 env:
-  TO: "kansangara.ravi@gmail.com"
+  TO: "kansangara.ravi@gmail.com, neel.dharsandiya@matrixcomsec.com"
   SUBJECT: "[SUCCESS] ${{ github.workflow }} #${{ github.run_number }}: Completed in [${{ github.repository }}]"
 
 jobs:
