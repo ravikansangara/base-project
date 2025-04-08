@@ -1,289 +1,219 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>GitHub Actions Notification</title>
-		<link
-			href="https://fonts.googleapis.com/css?family=Google+Sans:300,400,500,700&display=swap"
-			rel="stylesheet" />
-		<link
-			href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-			rel="stylesheet" />
-		<style>
-			body {
-				font-family: "Product Sans", "Segoe UI", sans-serif;
-				margin: 0;
-				padding: 0;
-				background-color: #e9eef6;
-				color: #303134;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				min-height: 100vh;
-			}
-
-			.card-container {
-				width: 100%;
-				max-width: 70vw;
-				background-color: #f8fafd;
-				border-radius: 12px;
-				box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-			}
-
-			.header-success {
-				background-color: #0d9249;
-				/* background-color: #028d09; */
-				/* background-color: #a61b1b; */
-				/* background-color: #d32f2f; */
-				color: white;
-				padding: 20px;
-				font-size: 24px;
-				display: flex;
-				align-items: center;
-				border-radius: 12px 12px 0 0;
-			}
-
-			.header-icon {
-				font-size: 32px;
-				margin-right: 12px;
-			}
-
-			.card-body {
-				padding: 30px;
-			}
-
-			.flex-row {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 30px;
-				justify-content: space-between;
-			}
-
-			.section {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-			}
-
-			.section-title {
-				display: flex;
-				align-items: center;
-				font-size: 18px;
-				margin-bottom: 20px;
-				line-height: 1;
-			}
-
-			.section-title-margin {
-				margin-top: 30px;
-			}
-
-			.section-title .material-icons-outlined {
-				/* font-size: 24px; */
-				line-height: 1;
-				margin-right: 8px;
-				vertical-align: middle;
-			}
-
-			.details {
-				display: flex;
-				flex-direction: column;
-			}
-
-			.detail-item {
-				display: flex;
-				align-items: center;
-				padding: 8px 0;
-				font-size: 16px;
-			}
-
-			.detail-item.column {
-				flex-direction: column;
-				align-items: flex-start;
-			}
-
-			.detail-key {
-				color: #707174;
-				min-width: 180px;
-			}
-
-			.detail-value {
-				font-weight: bold;
-				color: #404144;
-				word-break: break-word;
-			}
-
-			ul.detail-value {
-				font-weight: normal;
-				padding-left: 20px;
-				margin: 5px 0;
-			}
-
-			.detail-value li {
-				margin-bottom: 8px;
-			}
-
-			hr {
-				border: none;
-				height: 1px;
-				background-color: #ddd;
-				margin: 5px 0;
-			}
-
-			a {
-				color: #1e5de5;
-			}
-
-			.artifact-list {
-				list-style: none;
-				padding: 0;
-				margin-top: 10px;
-			}
-
-			.artifact-item {
-				display: flex;
-				align-items: center;
-				padding-top: 10px;
-			}
-
-			.artifact-item i {
-				margin-right: 8px;
-			}
-
-			.artifact-link {
-				color: #1e5de5;
-				text-decoration: underline;
-			}
-
-			.footer-message {
-				font-size: 14px;
-				color: #777;
-				text-align: center;
-				padding: 15px;
-				border-top: 1px solid #ddd;
-				border-radius: 0 0 12px 12px;
-				background-color: #f8f8f8;
-			}
-		</style>
+		<title>Workflow Notification</title>
 	</head>
-	<body>
-		<div class="card-container">
-			<div class="header-success">
-				<span class="material-icons-outlined header-icon">check_circle</span>
-				WORKFLOW COMPLETED SUCCESSFULLY!
-			</div>
-			<div class="card-body">
-				<div class="flex-row">
-					<!-- Run Summary -->
-					<div class="section">
-						<div class="section-title">
-							<span class="material-icons-outlined">assignment</span>
-							<span>Run Summary</span>
-						</div>
-						<div class="details">
-							<div class="detail-item">
-								<span class="detail-key">Repository:</span>
-								<span class="detail-value">
-									<a href="https://github.com/matrix-ipvs/nvrx"
-										>matrix-ipvs/nvrx</a
-									>
-								</span>
-							</div>
-							<hr />
-							<div class="detail-item">
-								<span class="detail-key">Workflow Name:</span>
-								<span class="detail-value">Alpha Build</span>
-							</div>
-							<hr />
-							<div class="detail-item">
-								<span class="detail-key">Branch/Tag Reference:</span>
-								<span class="detail-value">develop</span>
-							</div>
-							<hr />
-							<div class="detail-item">
-								<span class="detail-key">Commit SHA:</span>
-								<span class="detail-value">692ed90</span>
-							</div>
-							<hr />
-							<div class="detail-item">
-								<span class="detail-key">Triggered By:</span>
-								<span class="detail-value">ravi-kansangara_mtrx</span>
-							</div>
-							<hr />
-							<div class="detail-item">
-								<span class="detail-key">GitHub Run ID:</span>
-								<span class="detail-value">
-									<a href="{{build_url}}">#77</a>
-								</span>
-							</div>
-							<hr />
-							<div class="detail-item">
-								<span class="detail-key">Run Duration:</span>
-								<span class="detail-value">12m 40s</span>
-							</div>
-						</div>
-					</div>
+	<body
+		style="
+			margin: 0;
+			padding: 0;
+			background-color: #e9eef6;
+			font-family: 'Segoe UI', sans-serif;
+			color: #303134;
+		">
+		<table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 0">
+			<tr>
+				<td align="center">
+					<table
+						style="
+							max-width: 700px;
+							width: 100%;
+							background: #f8fafd;
+							border-radius: 12px;
+							box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+							overflow: hidden;
+						">
+						<!-- Header -->
+						<tr>
+							<td
+								style="
+									background-color: #0d9249;
+									color: #fff;
+									padding: 20px 30px;
+									font-size: 20px;
+									font-weight: bold;
+								">
+								WORKFLOW COMPLETED SUCCESSFULLY!
+							</td>
+						</tr>
 
-					<!-- Changelog -->
-					<div class="section">
-						<div class="section-title">
-							<span class="material-icons-outlined">update</span>
-							<span>Changelog</span>
-						</div>
-						<div class="details">
-							<div class="detail-item column">
-								<span class="section-title">
-									<!-- <span class="material-icons-outlined">new_releases</span> -->
-									<span>What's New</span>
-								</span>
-								<ul class="detail-value">
-									<li>Added support for adaptive streaming.</li>
-									<li>OTA update mechanism integrated.</li>
-									<li>New event logging framework introduced.</li>
-								</ul>
-							</div>
-							<div class="detail-item column">
-								<span class="section-title">
-									<!-- <span class="material-icons-outlined">bug_report</span> -->
-									<span>Bug Fixes</span>
-								</span>
-								<ul class="detail-value">
-									<li>Fixed memory leak in media encoder module.</li>
-									<li>Resolved UI crash during disconnection.</li>
-									<li>Corrected version label mismatch on dashboard.</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
+						<!-- Body -->
+						<tr>
+							<td style="padding: 30px">
+								<table
+									width="100%"
+									cellpadding="0"
+									cellspacing="0"
+									style="margin-bottom: 30px">
+									<tr>
+										<td
+											colspan="2"
+											style="
+												font-size: 18px;
+												font-weight: 500;
+												margin-bottom: 10px;
+											">
+											Run Summary
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">Repository:</td>
+										<td>
+											<a
+												href="https://github.com/matrix-ipvs/nvrx"
+												style="color: #1e5de5; text-decoration: none"
+												>matrix-ipvs/nvrx</a
+											>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">
+											Workflow Name:
+										</td>
+										<td style="font-weight: bold">Alpha Build</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">
+											Branch/Tag Reference:
+										</td>
+										<td style="font-weight: bold">develop</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">Commit SHA:</td>
+										<td style="font-weight: bold">692ed90</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">
+											Triggered By:
+										</td>
+										<td style="font-weight: bold">ravi-kansangara_mtrx</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">
+											GitHub Run ID:
+										</td>
+										<td>
+											<a
+												href="{{build_url}}"
+												style="color: #1e5de5; text-decoration: none"
+												>#77</a
+											>
+										</td>
+									</tr>
+									<tr>
+										<td style="padding: 8px 0; color: #707174">
+											Run Duration:
+										</td>
+										<td style="font-weight: bold">12m 40s</td>
+									</tr>
+								</table>
 
-				<!-- Artifacts -->
-				<div class="section-title section-title-margin">
-					<span class="material-icons-outlined">move_to_inbox</span>
-					<span>Artifacts</span>
-				</div>
-				<ul class="artifact-list">
-					<li class="artifact-item">
-						<i class="material-icons-outlined">link</i>
-						<a
-							href="https://artifactory.matrixcomsec.org/artifactory/ipvs-nvrx-dev-release/8.9.52/nvrx/"
-							class="artifact-link">
-							https://artifactory.matrixcomsec.org/artifactory/ipvs-nvrx-dev-release/8.9.52/nvrx/
-						</a>
-					</li>
-					<li class="artifact-item">
-						<i class="material-icons-outlined">link</i>
-						<a
-							href="https://artifactory.matrixcomsec.org/artifactory/ipvs-bsp-nvrx-rk3568-prod-release/8.7.0/"
-							class="artifact-link">
-							https://artifactory.matrixcomsec.org/artifactory/ipvs-bsp-nvrx-rk3568-prod-release/8.7.0/
-						</a>
-					</li>
-				</ul>
-			</div>
-			<div class="footer-message">
-				This is an auto-generated email by GitHub Actions. Do not reply to this email.
-			</div>
-		</div>
+								<table
+									width="100%"
+									cellpadding="0"
+									cellspacing="0"
+									style="margin-bottom: 30px">
+									<tr>
+										<td
+											style="
+												font-size: 18px;
+												font-weight: 500;
+												margin-bottom: 10px;
+											"
+											colspan="2">
+											Changelog
+										</td>
+									</tr>
+									<tr>
+										<td
+											colspan="2"
+											style="font-weight: bold; padding-top: 10px">
+											What's New
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<ul style="margin: 5px 0 15px 20px; padding: 0">
+												<li>Added support for adaptive streaming.</li>
+												<li>OTA update mechanism integrated.</li>
+												<li>New event logging framework introduced.</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="font-weight: bold">Bug Fixes</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<ul style="margin: 5px 0 0 20px; padding: 0">
+												<li>Fixed memory leak in media encoder module.</li>
+												<li>Resolved UI crash during disconnection.</li>
+												<li>
+													Corrected version label mismatch on dashboard.
+												</li>
+											</ul>
+										</td>
+									</tr>
+								</table>
+
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td
+											style="
+												font-size: 18px;
+												font-weight: 500;
+												margin-bottom: 10px;
+											">
+											Artifacts
+										</td>
+									</tr>
+									<tr>
+										<td style="padding-top: 10px">
+											<a
+												href="https://artifactory.matrixcomsec.org/artifactory/ipvs-nvrx-dev-release/8.9.52/nvrx/"
+												style="
+													color: #1e5de5;
+													text-decoration: underline;
+													display: block;
+													margin-bottom: 10px;
+												">
+												https://artifactory.matrixcomsec.org/artifactory/ipvs-nvrx-dev-release/8.9.52/nvrx/
+											</a>
+											<a
+												href="https://artifactory.matrixcomsec.org/artifactory/ipvs-bsp-nvrx-rk3568-prod-release/8.7.0/"
+												style="
+													color: #1e5de5;
+													text-decoration: underline;
+													display: block;
+												">
+												https://artifactory.matrixcomsec.org/artifactory/ipvs-bsp-nvrx-rk3568-prod-release/8.7.0/
+											</a>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+
+						<!-- Footer -->
+						<tr>
+							<td
+								style="
+									background-color: #f8f8f8;
+									border-top: 1px solid #ddd;
+									padding: 15px;
+									text-align: center;
+									font-size: 13px;
+									color: #777;
+								">
+								This is an auto-generated email by GitHub Actions. Do not reply to
+								this email.
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>
