@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 
 env:
-  TO: "kansangara.ravi@gmail.com, mayank.korat@matrixcomsec.com, mayank.korat@gmail.com"
+  TO: "kansangara.ravi@gmail.com"
   SUBJECT: "[SUCCESS] ${{ github.workflow }} #${{ github.run_number }}: Completed in [${{ github.repository }}]"
 
 jobs:
@@ -21,18 +21,13 @@ jobs:
         submodules: recursive
 
     - name: Read HTML Body from file
-      id: prepare_body
+      id: prepare_success_body
       run: |
         {
           echo "body<<EOF"
           cat .github/actions/email-notification/workflow-success-template.html
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
-
-    - name: Print Email Content
-      run: |
-        echo -e "To: ${{ env.TO }}"
-        echo -e "Subject: ${{ env.SUBJECT }}"
 
     - name: Send Email Notification
       uses: ravikansangara/base-project/.github/actions/email-notification@main
@@ -41,4 +36,22 @@ jobs:
         password: ${{ secrets.GMAIL_PASSWORD }}
         to: ${{ env.TO }}
         subject: ${{ env.SUBJECT }}
-        body: ${{ steps.prepare_body.outputs.body }}
+        body: ${{ steps.prepare_success_body.outputs.body }}
+
+    - name: Read HTML Body from file
+      id: prepare_failure_body
+      run: |
+        {
+          echo "body<<EOF"
+          cat .github/actions/email-notification/workflow-fail-template.html
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+
+    - name: Send Email Notification
+      uses: ravikansangara/base-project/.github/actions/email-notification@main
+      with: 
+        username: ${{ secrets.GMAIL_USERNAME }}
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        to: ${{ env.TO }}
+        subject: ${{ env.SUBJECT }}
+        body: ${{ steps.prepare_failure_body.outputs.body }}
