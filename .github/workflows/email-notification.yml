@@ -29,9 +29,9 @@ jobs:
 
     - name: Print Email Content
       run: |
-        echo To: ${{ env.TO }}
-        echo Subject: ${{ env.SUBJECT }}
-        echo Body: ${{ steps.prepare_body.outputs.body }}
+        echo -e To: ${{ env.TO }}
+        echo -e Subject: ${{ env.SUBJECT }}
+        echo -e Body: ${{ steps.prepare_body.outputs.body }}
 
     - name: Send Email Notification
       uses: ravikansangara/base-project/.github/actions/email-notification@main
