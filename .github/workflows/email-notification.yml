@@ -7,7 +7,7 @@ on:
 
 env:
   TO: "kansangara.ravi@gmail.com"
-  SUBJECT: "[SUCCESS] Workflow [${{ github.workflow }} - Run ${{ github.run_number }}] for Product [NVRX] Completed Successfully!"
+  SUBJECT: "[SUCCESS] Workflow ${{ github.workflow }} - Run #${{ github.run_number }} in ${{ github.repository }} Completed"
 
 jobs:
 
@@ -20,16 +20,16 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Read HTML body from file
+    - name: Read HTML Body from file
       id: prepare_body
       run: |
         echo "body<<EOF" >> $GITHUB_OUTPUT
         cat .github/actions/email-notification/workflow-success-template.html >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
-    - name: Print email content
+    - name: Print Email Content
       run: |
-        echo To: ${{ env.To }}
+        echo To: ${{ env.TO }}
         echo Subject: ${{ env.SUBJECT }}
         echo Body: ${{ steps.prepare_body.outputs.body }}
 
