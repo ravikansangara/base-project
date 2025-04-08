@@ -7,7 +7,7 @@ on:
 
 env:
   TO: "kansangara.ravi@gmail.com"
-  SUBJECT: "[SUCCESS] Workflow [Alpha Build] for Product [NVRX] Completed Successfully!"
+  SUBJECT: "[SUCCESS] Workflow [${{ github.workflow }} - Run ${{ github.run_number }}] for Product [NVRX] Completed Successfully!"
 
 jobs:
 
@@ -26,6 +26,12 @@ jobs:
         echo "body<<EOF" >> $GITHUB_OUTPUT
         cat .github/actions/email-notification/workflow-success-template.html >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Print email content
+      run: |
+        echo To: ${{ env.To }}
+        echo Subject: ${{ env.SUBJECT }}
+        echo Body: ${{ steps.prepare_body.outputs.body }}
 
     - name: Send Email Notification
       uses: ravikansangara/base-project/.github/actions/email-notification@main
