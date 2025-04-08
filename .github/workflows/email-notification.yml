@@ -23,9 +23,11 @@ jobs:
     - name: Read HTML Body from file
       id: prepare_body
       run: |
-        echo "body<<EOF" >> $GITHUB_OUTPUT
-        cat .github/actions/email-notification/workflow-success-template.html >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        {
+          echo "body<<EOF"
+          cat .github/actions/email-notification/workflow-success-template.html
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
 
     - name: Print Email Content
       run: |
