@@ -2,11 +2,14 @@ name: Email Notification
 
 on:
   workflow_dispatch:  # Allows manual triggering
-  push:
-    branches: [ "main" ]
+    inputs:
+      to_addresses:
+        description: 'Comma-separated email recipients'
+        required: true
+        default: 'kansangara.ravi@gmail.com'
 
 env:
-  TO: "kansangara.ravi@gmail.com, neel.dharsandiya@matrixcomsec.com"
+  TO: ${{ github.event.inputs.to_addresses }}
   SUBJECT: "[SUCCESS] ${{ github.workflow }} #${{ github.run_number }}: Completed in [${{ github.repository }}]"
 
 jobs:
