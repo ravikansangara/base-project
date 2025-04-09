@@ -1,41 +1,60 @@
 #---------------------------------------------------
 # Composite action (Send Email Notification)
 #---------------------------------------------------
-name: Send Email Notification
-description: Composite action to send email notification to users
-inputs:
 
+name: Send Email Notification
+description: Composite action to send an HTML email with rendered Jinja2 template and release info.
+
+inputs:
   username:
     required: true
-    description: "SMTP Account Username"
+    description: "SMTP username (email address)"
 
   password:
     required: true
-    description: "SMTP Account Password"
-    
+    description: "SMTP password (app-specific or token)"
+
   to:
     required: true
-    description: "To Field Email Adddress List"
+    description: "Comma-separated recipient email addresses"
 
   subject:
     required: true
-    description: "Email Notification Subject Line"
+    description: "Email subject line"
 
-  body:
+  release_info:
     required: true
-    description: "Email Notification Body"
+    description: "Path to release-info.json"
+
+  template:
+    required: true
+    description: "Path to Jinja2 HTML template"
 
 runs:
   using: "composite"
   steps:
-    - name: Send Email Notification
+    - name: Install Python dependencies
+      shell: bash
+      run: |
+        pip install --quiet jinja2
+
+    - name: Generate email HTML content
+      shell: bash
+      run: |
+        python3 generate-email.py \
+          --release-info "${{ inputs.release_info }}" \
+          --template "${{ inputs.template }}" \
+          --output output-email.html
+
+    - name: Send email
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: smtp.gmail.com
         server_port: 587
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
-        from: "kansangara.ravi@gmail.com"
+        from: ${{ inputs.username }}
         to: ${{ inputs.to }}
         subject: ${{ inputs.subject }}
-        html_body: ${{ inputs.body }}
+        html_body: file://output-email.html
+
