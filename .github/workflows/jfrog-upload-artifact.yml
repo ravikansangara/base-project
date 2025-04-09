@@ -1,9 +1,9 @@
-name: Test Composite Action
+name: Upload Artifact to Artifactory
 
 on:
   workflow_dispatch:  # Allows manual triggering
-  push:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
 
 env:
 
