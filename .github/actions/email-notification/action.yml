@@ -23,11 +23,11 @@ inputs:
     description: "Email subject line"
 
   body:
-    required: true
+    required: false
     description: "Email body as plain text"
 
   html_body:
-    required: true
+    required: false
     description: "Email body as HTML"
 
 runs:
