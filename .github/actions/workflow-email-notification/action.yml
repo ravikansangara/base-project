@@ -38,7 +38,12 @@ runs:
   using: "composite"
 
   steps:
-    - name: Install Python dependencies
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install jinja2 package
       shell: bash
       run: |
         pip install --quiet jinja2
