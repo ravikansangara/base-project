@@ -62,7 +62,7 @@ runs:
 
     - name: Generate email body
       id: email_body
-      shell: bash
+      shell: python
       env:
         REPOSITORY: ${{ github.repository }}
         WORKFLOW_NAME: ${{ github.workflow }}
