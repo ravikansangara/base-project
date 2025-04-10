@@ -23,7 +23,7 @@ def main():
         "BRANCH_TAG": os.getenv("BRANCH_TAG", "unknown"),
         "COMMIT_SHA": os.getenv("COMMIT_SHA", "abc123"),
         "TRIGGERED_BY": os.getenv("TRIGGERED_BY", "github-user"),
-        "RUN_NUMBER": os.getenv("RUN_ID", "#0"),
+        "RUN_NUMBER": os.getenv("RUN_NUMBER", "#0"),
         "RUN_URL": os.getenv("RUN_URL", "#unknown"),
 
         # Workflow status
