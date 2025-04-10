@@ -34,11 +34,28 @@ runs:
         version: 'latest'
 
     - name: Configure JFrog CLI
+      shell: python
+      env:
+        JF_URL: ${{ inputs.jf_url }}
+        JF_USERNAME: ${{ inputs.jf_username }}
+        JF_SECRET: ${{ inputs.jf_secret }}
+        LOCAL_PATH: ${{ inputs.local_artifact_path }}
+        REMOTE_PATH: ${{ inputs.artifact_upload_repo_path }}
       run: |
-        jf c add artifactory --url="${{ inputs.jf_url }}" --user="${{ inputs.jf_username }}" --password="${{ inputs.jf_secret }}" --overwrite=true --interactive=false
-      shell: bash
+        import os
+        import platform
+        from subprocess import run
 
-    - name: Upload Artifact to JFrog Artifactory
-      run: |
-        jf rt upload "${{ inputs.local_artifact_path }}" "${{ inputs.artifact_upload_repo_path }}" --flat=true
-      shell: bash
+        jf_url = os.environ["JF_URL"]
+        jf_user = os.environ["JF_USERNAME"]
+        jf_pass = os.environ["JF_SECRET"]
+        local = os.environ["LOCAL_PATH"]
+        remote = os.environ["REMOTE_PATH"]
+
+        cmd_config = f'jf c add artifactory --url="{jf_url}" --user="{jf_user}" --password="{jf_pass}" --overwrite=true --interactive=false'
+        
+        cmd_upload = f'jf rt upload "{local}" "{remote}" --flat=true'
+
+        run(cmd_config, shell=True)
+        run(cmd_upload, shell=True)
+    
