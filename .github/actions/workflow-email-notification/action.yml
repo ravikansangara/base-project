@@ -76,14 +76,19 @@ runs:
         BUG_FIXES: ${{ inputs.bug_fixes }}
         ARTIFACTS: ${{ inputs.artifacts }}
       run: |
+        import os
 
-        EMAIL_BODY_FILE="email-body-${RUN_ID}.html"
+        run_id = os.environ.get("RUN_NUMBER", "unknown")
+        email_body_file = f"email-body-{run_id}.html"
 
-        python3 ".github/actions/workflow-email-notification/generate-email-template.py" \
-          --template ".github/actions/workflow-email-notification/workflow-email-template.j2" \
-          --output "$EMAIL_BODY_FILE"
+        os.system(
+            f'python3 ".github/actions/workflow-email-notification/generate-email-template.py" '
+            f'--template ".github/actions/workflow-email-notification/workflow-email-template.j2" '
+            f'--output "{email_body_file}"'
+        )
 
-        echo "html_body=$EMAIL_BODY_FILE" >> "$GITHUB_OUTPUT"
+        with open(os.environ["GITHUB_OUTPUT"], "a") as ghout:
+            ghout.write(f"html_body={email_body_file}\n")
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
