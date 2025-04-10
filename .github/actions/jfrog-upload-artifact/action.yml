@@ -3,6 +3,7 @@
 #---------------------------------------------------
 name: JFrog Upload Artifact
 description: Composite action to upload artifact to JFrog Artifactory
+
 inputs:
   jf_url:
     required: true

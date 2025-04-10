@@ -3,7 +3,7 @@
 #---------------------------------------------------
 
 name: Send Email Notification
-description: Composite action to send an HTML email with rendered Jinja2 template and release info.
+description: Composite action to send an email notification
 
 inputs:
   username:
@@ -22,29 +22,17 @@ inputs:
     required: true
     description: "Email subject line"
 
-  release_info:
+  body:
     required: true
-    description: "Path to release-info.json"
+    description: "Email body as plain text"
 
-  template:
+  html_body:
     required: true
-    description: "Path to Jinja2 HTML template"
+    description: "Email body as HTML"
 
 runs:
   using: "composite"
   steps:
-    - name: Install Python dependencies
-      shell: bash
-      run: |
-        pip install --quiet jinja2
-
-    - name: Generate email HTML content
-      shell: bash
-      run: |
-        python3 generate-email.py \
-          --release-info "${{ inputs.release_info }}" \
-          --template "${{ inputs.template }}" \
-          --output output-email.html
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
@@ -56,5 +44,6 @@ runs:
         from: ${{ inputs.username }}
         to: ${{ inputs.to }}
         subject: ${{ inputs.subject }}
-        html_body: file://output-email.html
+        body: ${{ inputs.body }}
+        html_body: ${{ inputs.html_body }}
 
