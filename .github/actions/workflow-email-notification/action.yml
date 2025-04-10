@@ -48,9 +48,9 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.workflow_success }}" == "true" ]]; then
-          SUBJECT="[SUCCESS] Workflow '${{ github.workflow }}' #${{ github.run_number }} of '${{ github.repository }}' completed"
+          SUBJECT="[🟢 Workflow] ${{ github.workflow }} #${{ github.run_number }} of ${{ github.repository }} completed successfully"
         else
-          SUBJECT="[FAILURE] Workflow '${{ github.workflow }}' #${{ github.run_number }} of '${{ github.repository }}' failed to complete"
+          SUBJECT="[🔴 Workflow] ${{ github.workflow }} #${{ github.run_number }} of ${{ github.repository }} failed to complete"
         fi
 
         echo "subject=$SUBJECT" >> "$GITHUB_OUTPUT"
