@@ -74,7 +74,7 @@ runs:
 
         EMAIL_BODY_FILE="email-body-${RUN_ID}.html"
 
-        python3 ".github/actions/workflow-email-notification/generate-email-template.py \
+        python3 ".github/actions/workflow-email-notification/generate-email-template.py" \
           --template ".github/actions/workflow-email-notification/workflow-email-template.j2" \
           --output "$EMAIL_BODY_FILE"
 
