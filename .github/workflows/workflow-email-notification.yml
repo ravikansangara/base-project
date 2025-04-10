@@ -13,9 +13,23 @@ on:
         required: true
         default: 'success'
         type: choice
-        options:
-          - success
-          - failure
+        options: [success, failure]
+
+      whats_new:
+        description: "What's new (JSON array)"
+        required: false
+        default: '["Improved performance", "New API support"]'
+
+      bug_fixes:
+        description: "Bug fixes (JSON array)"
+        required: false
+        default: '["Fixed login issue", "Resolved crash on iOS"]'
+
+      artifacts:
+        description: "Artifacts (JSON array of label-url pairs)"
+        required: false
+        default: '[{"label": "Build Zip", "url": "https://example.com/build.zip"}]'
+
 jobs:
 
   workflow_email_notification:
@@ -34,3 +48,6 @@ jobs:
         password: ${{ secrets.GMAIL_PASSWORD }}
         to: ${{ github.event.inputs.to_addresses }}
         workflow_success: ${{ github.event.inputs.status == 'success' && 'true' || 'false' }}
+        whats_new: ${{ github.event.inputs.whats_new }}
+        bug_fixes: ${{ github.event.inputs.bug_fixes }}
+        artifacts: ${{ github.event.inputs.artifacts }}
