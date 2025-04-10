@@ -44,21 +44,32 @@ runs:
         python-version: '3.x'
 
     - name: Install jinja2 package
-      shell: bash
       run: |
-        pip install --quiet jinja2
+        python -m pip install --quiet jinja2
 
     - name: Generate email subject
       id: email_subject
-      shell: bash
+      shell: python
+      env:
+        WORKFLOW_SUCCESS: ${{ inputs.workflow_success }}
+        WORKFLOW_NAME: ${{ github.workflow }}
+        RUN_NUMBER: ${{ github.run_number }}
+        REPOSITORY: ${{ github.repository }}
       run: |
-        if [[ "${{ inputs.workflow_success }}" == "true" ]]; then
-          SUBJECT="🌤 [Workflow] ${{ github.workflow }} #${{ github.run_number }} of [${{ github.repository }}] completed successfully!"
-        else
-          SUBJECT="🌦️ [Workflow] ${{ github.workflow }} #${{ github.run_number }} of [${{ github.repository }}] failed to complete!"
-        fi
+        import os
 
-        echo "subject=$SUBJECT" >> "$GITHUB_OUTPUT"
+        workflow_success = os.environ.get("WORKFLOW_SUCCESS", "").lower() == "true"
+        workflow_name = os.environ.get("WORKFLOW_NAME", "")
+        run_number = os.environ.get("RUN_NUMBER", "")
+        repo = os.environ.get("REPOSITORY", "")
+
+        if workflow_success:
+            email_subject = f"🌤 [Workflow] {workflow_name} #{run_number} of [{repo}] completed successfully!"
+        else:
+            email_subject = f"🌦️ [Workflow] {workflow_name} #{run_number} of [{repo}] failed to complete!"
+
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+          f.write(f"subject={email_subject}\n")
 
     - name: Generate email body
       id: email_body
@@ -77,18 +88,20 @@ runs:
         ARTIFACTS: ${{ inputs.artifacts }}
       run: |
         import os
+        import subprocess
 
         run_id = os.environ.get("RUN_NUMBER", "unknown")
         email_body_file = f"email-body-{run_id}.html"
 
-        os.system(
-            f'python3 ".github/actions/workflow-email-notification/generate-email-template.py" '
-            f'--template ".github/actions/workflow-email-notification/workflow-email-template.j2" '
-            f'--output "{email_body_file}"'
-        )
+        subprocess.run([
+          "python3", 
+          ".github/actions/workflow-email-notification/generate-email-template.py",
+          "--template", ".github/actions/workflow-email-notification/workflow-email-template.j2",
+          "--output", email_body_file
+        ], check=True)
 
-        with open(os.environ["GITHUB_OUTPUT"], "a") as ghout:
-            ghout.write(f"html_body={email_body_file}\n")
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"html_body={email_body_file}\n")
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
