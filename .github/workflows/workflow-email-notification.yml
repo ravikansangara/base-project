@@ -1,0 +1,35 @@
+name: Workflow Email Notification
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+    inputs:
+      to_addresses:
+        description: 'Comma-separated email recipients'
+        required: true
+        default: 'kansangara.ravi@gmail.com'
+
+      status:
+        description: 'Notification Type'
+        required: true
+        default: 'success'
+        type: choice
+        options:
+          - success
+          - failure
+jobs:
+
+  email_notification:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Send Email Notification
+      uses: ravikansangara/base-project/.github/actions/workflow-email-notification@main
+      with: 
+        username: ${{ secrets.GMAIL_USERNAME }}
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        to: ${{ github.event.inputs.to_addresses }}
