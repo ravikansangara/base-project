@@ -18,7 +18,7 @@ on:
           - failure
 jobs:
 
-  email_notification:
+  workflow_email_notification:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,3 +33,4 @@ jobs:
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
         to: ${{ github.event.inputs.to_addresses }}
+        workflow_status: ${{ github.event.inputs.status == 'success' && 'true' || 'false' }}
