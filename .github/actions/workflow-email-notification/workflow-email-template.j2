@@ -26,256 +26,272 @@
 							border-spacing: 0;
 							box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 						">
-						<!-- Header -->
-            {% if WORKFLOW_SUCCESS %}
-              
-              <!-- ----------------------------------------------------- -->
-              <!-- SUCCESS Header -->
-              <!-- ----------------------------------------------------- -->
-              <tr>
-                <td
-                  style="
-                    background-color: #0d9249;
-                    margin: 0;
-                    color: #fff;
-                    padding: 18px;
-                    font-size: 20px;
-                    border-radius: 12px 12px 0 0;
-                  ">
-                  🌤 &nbsp;Workflow Completed Successfully!
-                </td>
-              </tr>
 
-            {% else %}
-              
-              <!-- ----------------------------------------------------- -->
-              <!-- FAILURE Header -->
-              <!-- ----------------------------------------------------- -->
-              <tr>
-                <td
-                    style="
-                        background-color: #c92525;
-                        margin: 0;
-                        color: #fff;
-                        padding: 20px;
-                        font-size: 20px;
-                        border-radius: 12px 12px 0 0;
-                    ">
-                    🌦️ &nbsp;Workflow Failed to Complete!
-                </td>
-              </tr>
-              
-            {% endif %}
-						
-
-            <!-- Body -->
-            <tr>
-                <td style="padding: 30px">
-                    <!-- ----------------------------------------------------- -->
-                    <!-- Run Summary -->
-                    <!-- ----------------------------------------------------- -->
-                    <table
-                        width="100%"
-                        style="margin-bottom: 30px; padding: 0; border-spacing: 0">
+                        {% if WORKFLOW_SUCCESS %}
+                        
+                        <!-- ----------------------------------------------------- -->
+                        <!-- SUCCESS Header -->
+                        <!-- ----------------------------------------------------- -->
                         <tr>
                             <td
-                                colspan="2"
                                 style="
-                                    font-size: 18px;
-                                    font-weight: 500;
-                                    padding-bottom: 10px;
+                                background-color: #0d9249;
+                                margin: 0;
+                                color: #fff;
+                                padding: 18px;
+                                font-size: 20px;
+                                border-radius: 12px 12px 0 0;
                                 ">
-                                📝 &nbsp;Run Summary
+                                🌤 &nbsp;Workflow Completed Successfully!
                             </td>
                         </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">Repository:</td>
-                            <td>
-                                <a
-                                    href="https://github.com/{{ REPOSITORY }}"
-                                    style="
-                                        color: #1e5de5;
-                                        text-decoration: underline;
-                                        font-weight: bold;
-                                    "
-                                    >{{ REPOSITORY }}</a
-                                >
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">
-                                Workflow Name:
-                            </td>
-                            <td style="font-weight: bold">{{ WORKFLOW_NAME }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">
-                                Branch/Tag Reference:
-                            </td>
-                            <td style="font-weight: bold">{{ BRANCH_TAG }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">Commit SHA:</td>
-                            <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">
-                                Trigger Event:
-                            </td>
-                            <td style="font-weight: bold">{{ TRIGGER_EVENT }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">
-                                Triggered By:
-                            </td>
-                            <td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; color: #5f6368">
-                                GitHub Run Number:
-                            </td>
-                            <td>
-                                <a
-                                    href="{{ RUN_URL }}"
-                                    style="
-                                        color: #1e5de5;
-                                        text-decoration: underline;
-                                        font-weight: bold;
-                                    "
-                                    >#{{ RUN_NUMBER }}</a
-                                >
-                            </td>
-                        </tr>
-                    </table>
 
-				<!-- ----------------------------------------------------- -->
-                <!-- Changelog -->
-                <!-- ----------------------------------------------------- -->
-                {% if WHATS_NEW or BUG_FIXES %}
-				<table
-					width="100%"
-					style="margin-bottom: 30px; padding: 0; border-spacing: 0">
-					<tr>
-						<td
-							colspan="2"
-							style="
-								font-size: 18px;
-								font-weight: 500;
-								padding-bottom: 10px;
-							">
-							🛠️ &nbsp;Changelog
-						</td>
-					</tr>
+                        {% else %}
+                        
+                        <!-- ----------------------------------------------------- -->
+                        <!-- FAILURE Header -->
+                        <!-- ----------------------------------------------------- -->
+                        <tr>
+                            <td
+                                style="
+                                    background-color: #c92525;
+                                    margin: 0;
+                                    color: #fff;
+                                    padding: 20px;
+                                    font-size: 20px;
+                                    border-radius: 12px 12px 0 0;
+                                ">
+                                🌦️ &nbsp;Workflow Failed to Complete!
+                            </td>
+                        </tr>
+                        
+                        {% endif %}
+                                    
+                        <!-- Body -->
+                        <tr>
+                            <td style="padding: 30px">
+                                <!-- ----------------------------------------------------- -->
+                                <!-- Run Summary -->
+                                <!-- ----------------------------------------------------- -->
+                                <table
+                                    width="100%"
+                                    style="margin-bottom: 30px; padding: 0; border-spacing: 0">
+                                    <tr>
+                                        <td
+                                            colspan="2"
+                                            style="
+                                                font-size: 18px;
+                                                font-weight: 500;
+                                                padding-bottom: 10px;
+                                            ">
+                                            📝 &nbsp;Run Summary
+                                        </td>
+                                    </tr>
 
-                  <!-- ----------------------------------------------------- -->
-                  <!-- Changelog (What's New) -->
-                  <!-- ----------------------------------------------------- -->
-                  {% if WHATS_NEW %}
-					<tr>
-						<td
-							colspan="2"
-							style="
-								font-size: 14px;
-								font-weight: bold;
-								padding: 10px 0;
-							">
-							What's New
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<ul style="margin: 5px 0 15px 20px; padding: 0">
-								{% for entry in WHATS_NEW %}
-									<li>{{ entry }}</li>
-								{% endfor %}
-							</ul>
-						</td>
-					</tr>
-                  {% endif %}
+                                    <!-- Repository: -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">Repository:</td>
+                                        <td>
+                                            <a
+                                                href="https://github.com/{{ REPOSITORY }}"
+                                                style="
+                                                    color: #1e5de5;
+                                                    text-decoration: underline;
+                                                    font-weight: bold;
+                                                "
+                                                >{{ REPOSITORY }}</a
+                                            >
+                                        </td>
+                                    </tr>
 
-                  <!-- ----------------------------------------------------- -->
-                  <!-- Changelog (Bug Fixes) -->
-                  <!-- ----------------------------------------------------- -->
-                  {% if BUG_FIXES %}
-                    <tr>
-                      <td
-                        colspan="2"
-                        style="
-                          font-size: 14px;
-                          font-weight: bold;
-                          padding: 10px 0;
-                        ">
-                        Bug Fixes
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                        <ul style="margin: 5px 0 0 20px; padding: 0">
-                          {% for entry in BUG_FIXES %}
-                            <li>{{ entry }}</li>
-                          {% endfor %}
-                        </ul>
-                      </td>
-                    </tr>
-                {% endif %}
+                                    <!-- Workflow Name: -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">
+                                            Workflow Name:
+                                        </td>
+                                        <td style="font-weight: bold">{{ WORKFLOW_NAME }}</td>
+                                    </tr>
 
-					        </table>
-                {% endif %}
+                                    <!-- Trigger Event: -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">
+                                            Trigger Event:
+                                        </td>
+                                        <td style="font-weight: bold">{{ TRIGGER_EVENT }}</td>
+                                    </tr>
 
-				<!-- ----------------------------------------------------- -->
-                <!-- Artifacts -->
-                <!-- ----------------------------------------------------- -->
-                {% if WORKFLOW_SUCCESS and ARTIFACTS %}
+                                    <!-- Triggered By -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">
+                                            Triggered By:
+                                        </td>
+                                        <td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
+                                    </tr>
 
-                  <table width="100%">
-                    <tr>
-                      <td
-                        style="
-                          padding: 0;
-                          border-spacing: 0;
-                          font-size: 18px;
-                          font-weight: 500;
-                          padding-bottom: 10px;
-                        ">
-                        📦 &nbsp;Artifacts
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding-top: 10px">
-                        {% for artifact in ARTIFACTS %}
-                        <div style="margin-bottom: 20px">
-                          <span style="color: #5f6368">{{ artifact.label }}:</span><br />
-                          <a href="{{ artifact.url }}" style="color: #1e5de5; text-decoration: underline;">
-                            {{ artifact.url }}
-                          </a>
-                        </div>
-                        {% endfor %}
-                      </td>
-                    </tr>
-                  </table>
-                
-                {% endif %}
-							</td>
-						</tr>
+                                    <!-- Branch/Tag Reference -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">
+                                            Branch/Tag Reference:
+                                        </td>
+                                        <td style="font-weight: bold">{{ BRANCH_TAG }}</td>
+                                    </tr>
 
-						<!-- Footer -->
-						<tr>
-							<td
-								style="
-									border-top: 1px solid #e9eef6;
-									border-radius: 0 0 12px 12px;
-									padding: 12px 0;
-									text-align: center;
-									font-size: 10px;
-									color: #444746;
-								">
-								This is an automated email from GitHub Actions. Please do not reply to this email.
-								For queries, contact devsecops@matrixcomse.com.
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-	</body>
+                                    <!-- GitHub Run Number -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">Commit SHA:</td>
+                                        <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #5f6368">
+                                            GitHub Run Number:
+                                        </td>
+                                        <td>
+                                            <a
+                                                href="{{ RUN_URL }}"
+                                                style="
+                                                    color: #1e5de5;
+                                                    text-decoration: underline;
+                                                    font-weight: bold;
+                                                "
+                                                >#{{ RUN_NUMBER }}</a
+                                            >
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            <!-- ----------------------------------------------------- -->
+                            <!-- Changelog -->
+                            <!-- ----------------------------------------------------- -->
+                            {% if WHATS_NEW or BUG_FIXES %}
+
+                                <table
+                                    width="100%"
+                                    style="margin-bottom: 30px; padding: 0; border-spacing: 0">
+                                    <tr>
+                                        <td
+                                            colspan="2"
+                                            style="
+                                                    font-size: 18px;
+                                                    font-weight: 500;
+                                                    padding-bottom: 10px;
+                                            ">
+                                            🛠️ &nbsp;Changelog
+                                        </td>
+                                    </tr>
+
+                                <!-- ----------------------------------------------------- -->
+                                <!-- Changelog (What's New) -->
+                                <!-- ----------------------------------------------------- -->
+                                {% if WHATS_NEW %}
+                                    <tr>
+                                        <td
+                                            colspan="2"
+                                            style="
+                                                    font-size: 14px;
+                                                    font-weight: bold;
+                                                    padding: 10px 0;
+                                            ">
+                                            What's New
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <ul style="margin: 5px 0 15px 20px; padding: 0">
+                                                {% for entry in WHATS_NEW %}
+                                                        <li>{{ entry }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+
+                                <!-- ----------------------------------------------------- -->
+                                <!-- Changelog (Bug Fixes) -->
+                                <!-- ----------------------------------------------------- -->
+                                {% if BUG_FIXES %}
+                                    <tr>
+                                        <td
+                                        colspan="2"
+                                        style="
+                                            font-size: 14px;
+                                            font-weight: bold;
+                                            padding: 10px 0;
+                                        ">
+                                        Bug Fixes
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                        <ul style="margin: 5px 0 0 20px; padding: 0">
+                                            {% for entry in BUG_FIXES %}
+                                            <li>{{ entry }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+
+                                </table>
+                            {% endif %}
+
+                            <!-- ----------------------------------------------------- -->
+                            <!-- Artifacts -->
+                            <!-- ----------------------------------------------------- -->
+                            {% if WORKFLOW_SUCCESS and ARTIFACTS %}
+
+                                <table width="100%">
+                                    <tr>
+                                        <td
+                                        style="
+                                            padding: 0;
+                                            border-spacing: 0;
+                                            font-size: 18px;
+                                            font-weight: 500;
+                                            padding-bottom: 10px;
+                                        ">
+                                        📦 &nbsp;Artifacts
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="padding-top: 10px">
+
+                                        {% for artifact in ARTIFACTS %}
+                                        <div style="margin-bottom: 20px">
+                                            <span style="color: #5f6368">{{ artifact.label }}:</span><br />
+                                            <a href="{{ artifact.url }}" style="color: #1e5de5; text-decoration: underline;">
+                                            {{ artifact.url }}
+                                            </a>
+                                        </div>
+                                        {% endfor %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                            </td>
+                        </tr>
+
+                        <!-- ----------------------------------------------------- -->
+                        <!-- Footer -->
+                        <!-- ----------------------------------------------------- -->
+                        <tr>
+                            <td
+                            style="
+                                border-top: 1px solid #e9eef6;
+                                border-radius: 0 0 12px 12px;
+                                padding: 12px 0;
+                                text-align: center;
+                                font-size: 10px;
+                                color: #444746;
+                            ">
+                            This is an automated email from GitHub Actions. Please do not reply to this email.
+                            For queries, contact devsecops@matrixcomse.com.
+                            </td>
+                        </tr>
+
+                    </table>    
+                </td>
+            </tr>
+        </table>
+    </body>
 </html>
