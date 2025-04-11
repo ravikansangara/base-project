@@ -1,7 +1,7 @@
-name: Workflow Email Notification
+name: Test Workflow Email Notification Action
 
 on:
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
     inputs:
       to_addresses:
         description: 'Comma-separated email recipients'
@@ -28,12 +28,14 @@ on:
       artifacts:
         description: "Artifacts (JSON array of label-url pairs)"
         required: false
-        default: '[{"label": "Build Zip", "url": "https://example.com/build.zip"}]'
+        default: '[{"label": "Product Artifact", "url": "https://artifactory.matrixcomsec.org/repo-path/artifact.zip"}]'
 
 jobs:
-
   workflow_email_notification:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - name: Checkout repository with submodules
