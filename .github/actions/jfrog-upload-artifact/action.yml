@@ -67,7 +67,8 @@ runs:
             f"--user={username}",
             f"--password={password}",
             "--overwrite=true",
-            "--interactive=false"
+            "--interactive=false",
+            "--insecure-tls=true"
         ], check=True)
 
         #---------------------------------------------------
@@ -78,6 +79,7 @@ runs:
             local_path,
             remote_path,
             "--flat=true",
+            "--insecure-tls=true",
             f"--server-id={server_id}"
         ], check=True)
 
@@ -86,6 +88,6 @@ runs:
         #---------------------------------------------------
         subprocess.run([
             "jf", "c", "delete",
-            server_id,
-            "--quiet"
+            "--quiet",
+            f"--server-id={server_id}"
         ], check=True)
