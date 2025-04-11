@@ -22,6 +22,7 @@ def main():
         "WORKFLOW_NAME": os.getenv("WORKFLOW_NAME", "Unnamed Workflow"),
         "BRANCH_TAG": os.getenv("BRANCH_TAG", "unknown"),
         "COMMIT_SHA": os.getenv("COMMIT_SHA", "abc123"),
+        "TRIGGER_EVENT": os.getenv("TRIGGER_EVENT", "unknown"),
         "TRIGGERED_BY": os.getenv("TRIGGERED_BY", "github-user"),
         "RUN_NUMBER": os.getenv("RUN_NUMBER", "#0"),
         "RUN_URL": os.getenv("RUN_URL", "#unknown"),

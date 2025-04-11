@@ -68,123 +68,129 @@
             {% endif %}
 						
 
-						<!-- Body -->
-						<tr>
-							<td style="padding: 30px">
-								<!-- ----------------------------------------------------- -->
-								<!-- Run Summary -->
-								<!-- ----------------------------------------------------- -->
-								<table
-									width="100%"
-									style="margin-bottom: 30px; padding: 0; border-spacing: 0">
-									<tr>
-										<td
-											colspan="2"
-											style="
-												font-size: 18px;
-												font-weight: 500;
-												padding-bottom: 10px;
-											">
-											📝 &nbsp;Run Summary
-										</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px 0; color: #5f6368">Repository:</td>
-										<td>
-											<a
-												href="https://github.com/{{ REPOSITORY }}"
-												style="
-													color: #1e5de5;
-													text-decoration: underline;
-													font-weight: bold;
-												"
-												>{{ REPOSITORY }}</a
-											>
-										</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px 0; color: #5f6368">
-											Workflow Name:
-										</td>
-										<td style="font-weight: bold">{{ WORKFLOW_NAME }}</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px 0; color: #5f6368">
-											Branch/Tag Reference:
-										</td>
-										<td style="font-weight: bold">{{ BRANCH_TAG }}</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px 0; color: #5f6368">Commit SHA:</td>
-										<td style="font-weight: bold">{{ COMMIT_SHA }}</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px 0; color: #5f6368">
-											Triggered By:
-										</td>
-										<td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
-									</tr>
-									<tr>
-										<td style="padding: 8px 0; color: #5f6368">
-											GitHub Run Number:
-										</td>
-										<td>
-											<a
-												href="{{ RUN_URL }}"
-												style="
-													color: #1e5de5;
-													text-decoration: underline;
-													font-weight: bold;
-												"
-												>#{{ RUN_NUMBER }}</a
-											>
-										</td>
-									</tr>
-								</table>
+            <!-- Body -->
+            <tr>
+                <td style="padding: 30px">
+                    <!-- ----------------------------------------------------- -->
+                    <!-- Run Summary -->
+                    <!-- ----------------------------------------------------- -->
+                    <table
+                        width="100%"
+                        style="margin-bottom: 30px; padding: 0; border-spacing: 0">
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="
+                                    font-size: 18px;
+                                    font-weight: 500;
+                                    padding-bottom: 10px;
+                                ">
+                                📝 &nbsp;Run Summary
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">Repository:</td>
+                            <td>
+                                <a
+                                    href="https://github.com/{{ REPOSITORY }}"
+                                    style="
+                                        color: #1e5de5;
+                                        text-decoration: underline;
+                                        font-weight: bold;
+                                    "
+                                    >{{ REPOSITORY }}</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">
+                                Workflow Name:
+                            </td>
+                            <td style="font-weight: bold">{{ WORKFLOW_NAME }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">
+                                Branch/Tag Reference:
+                            </td>
+                            <td style="font-weight: bold">{{ BRANCH_TAG }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">Commit SHA:</td>
+                            <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">
+                                Trigger Event:
+                            </td>
+                            <td style="font-weight: bold">{{ TRIGGER_EVENT }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">
+                                Triggered By:
+                            </td>
+                            <td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; color: #5f6368">
+                                GitHub Run Number:
+                            </td>
+                            <td>
+                                <a
+                                    href="{{ RUN_URL }}"
+                                    style="
+                                        color: #1e5de5;
+                                        text-decoration: underline;
+                                        font-weight: bold;
+                                    "
+                                    >#{{ RUN_NUMBER }}</a
+                                >
+                            </td>
+                        </tr>
+                    </table>
 
 				<!-- ----------------------------------------------------- -->
                 <!-- Changelog -->
                 <!-- ----------------------------------------------------- -->
                 {% if WHATS_NEW or BUG_FIXES %}
-								<table
-									width="100%"
-									style="margin-bottom: 30px; padding: 0; border-spacing: 0">
-									<tr>
-										<td
-											colspan="2"
-											style="
-												font-size: 18px;
-												font-weight: 500;
-												padding-bottom: 10px;
-											">
-											🛠️ &nbsp;Changelog
-										</td>
-									</tr>
+				<table
+					width="100%"
+					style="margin-bottom: 30px; padding: 0; border-spacing: 0">
+					<tr>
+						<td
+							colspan="2"
+							style="
+								font-size: 18px;
+								font-weight: 500;
+								padding-bottom: 10px;
+							">
+							🛠️ &nbsp;Changelog
+						</td>
+					</tr>
 
                   <!-- ----------------------------------------------------- -->
                   <!-- Changelog (What's New) -->
                   <!-- ----------------------------------------------------- -->
                   {% if WHATS_NEW %}
-									<tr>
-										<td
-											colspan="2"
-											style="
-												font-size: 14px;
-												font-weight: bold;
-												padding: 10px 0;
-											">
-											What's New
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<ul style="margin: 5px 0 15px 20px; padding: 0">
-												{% for entry in WHATS_NEW %}
-													<li>{{ entry }}</li>
-												{% endfor %}
-											</ul>
-										</td>
-									</tr>
+					<tr>
+						<td
+							colspan="2"
+							style="
+								font-size: 14px;
+								font-weight: bold;
+								padding: 10px 0;
+							">
+							What's New
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<ul style="margin: 5px 0 15px 20px; padding: 0">
+								{% for entry in WHATS_NEW %}
+									<li>{{ entry }}</li>
+								{% endfor %}
+							</ul>
+						</td>
+					</tr>
                   {% endif %}
 
                   <!-- ----------------------------------------------------- -->
