@@ -43,7 +43,7 @@ def main():
     output = template.render(**context)
 
     # Write output HTML
-    with open(args.output, "w") as f:
+    with open(args.output, "w", encoding="utf-8") as f:
         f.write(output)
 
 if __name__ == "__main__":

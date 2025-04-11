@@ -95,7 +95,7 @@ runs:
         email_body_file = f"email-body-{run_id}.html"
 
         subprocess.run([
-          "python3", 
+          "python", 
           ".github/actions/workflow-email-notification/generate-email-template.py",
           "--template", ".github/actions/workflow-email-notification/workflow-email-template.j2",
           "--output", email_body_file
