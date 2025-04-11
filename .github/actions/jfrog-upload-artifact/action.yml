@@ -1,19 +1,19 @@
 #---------------------------------------------------
-# Composite action (upload artifact to JFrog Artifactory)
+# Composite action (Upload artifact to JFrog Artifactory)
 #---------------------------------------------------
 name: JFrog Upload Artifact
 description: Composite action to upload artifact to JFrog Artifactory
 
 inputs:
-  jf_url:
+  artifactory_url:
     required: true
     description: "Artifactory base URL"
 
-  jf_username:
+  artifactory_username:
     required: true
     description: "Artifactory Authentication Username"
 
-  jf_secret:
+  artifactory_password:
     required: true
     description: "Artifactory Authentication Password/Token"
 
@@ -21,9 +21,9 @@ inputs:
     required: true
     description: "Absolute path to local artifact"
 
-  artifact_upload_repo_path:
+  remote_repo_path:
     required: true
-    description: "Artifactory repository name to upload artifact"
+    description: "Artifactory repository path to upload artifact"
 
 runs:
   using: "composite"
@@ -33,29 +33,54 @@ runs:
       with:
         version: 'latest'
 
-    - name: Configure JFrog CLI
+    - name: Upload artifact to Artifactory
       shell: python
       env:
-        JF_URL: ${{ inputs.jf_url }}
-        JF_USERNAME: ${{ inputs.jf_username }}
-        JF_SECRET: ${{ inputs.jf_secret }}
-        LOCAL_PATH: ${{ inputs.local_artifact_path }}
-        REMOTE_PATH: ${{ inputs.artifact_upload_repo_path }}
+        artifactory_url: ${{ inputs.artifactory_url }}
+        artifactory_username: ${{ inputs.artifactory_username }}
+        artifactory_password: ${{ inputs.artifactory_password }}
+        local_artifact_path: ${{ inputs.local_artifact_path }}
+        remote_repo_path: ${{ inputs.remote_repo_path }}
+        server_id: "mx-artifactory"
       run: |
         import os
-        import platform
-        from subprocess import run
+        import subprocess
 
-        jf_url = os.environ["JF_URL"]
-        jf_user = os.environ["JF_USERNAME"]
-        jf_pass = os.environ["JF_SECRET"]
-        local = os.environ["LOCAL_PATH"]
-        remote = os.environ["REMOTE_PATH"]
+        url = os.environ["artifactory_url"]
+        username = os.environ["artifactory_username"]
+        password = os.environ["artifactory_password"]
+        local_path = os.environ["local_artifact_path"]
+        remote_path = os.environ["remote_repo_path"]
+        server_id = os.environ["server_id"]
 
-        cmd_config = f'jf c add artifactory --url="{jf_url}" --user="{jf_user}" --password="{jf_pass}" --overwrite=true --interactive=false'
-        
-        cmd_upload = f'jf rt upload "{local}" "{remote}" --flat=true'
+        #---------------------------------------------------
+        # Add JFrog server config
+        #---------------------------------------------------
+        subprocess.run([
+            "jf", "c", "add", server_id,
+            f"--url={url}",
+            f"--user={username}",
+            f"--password={password}",
+            "--overwrite=true",
+            "--interactive=false"
+        ], check=True)
 
-        run(cmd_config, shell=True)
-        run(cmd_upload, shell=True)
-    
+        #---------------------------------------------------
+        # Upload artifact
+        #---------------------------------------------------
+        subprocess.run([
+            "jf", "rt", "upload",
+            local_path,
+            remote_path,
+            "--flat=true",
+            f"--server-id={server_id}"
+        ], check=True)
+
+        #---------------------------------------------------
+        # Remove server config
+        #---------------------------------------------------
+        subprocess.run([
+            "jf", "c", "delete",
+            server_id,
+            "--quiet"
+        ], check=True)

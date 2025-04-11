@@ -1,19 +1,19 @@
 name: Upload Artifact to Artifactory
 
 on:
-  workflow_dispatch:  # Allows manual triggering
-  # push:
-  #   branches: [ "main" ]
+  workflow_dispatch:
 
 env:
-
-  # JFrog artifact upload repository path
   LOCAL_ARTIFACT_PATH: "${{ github.workspace }}/README.md"
-  JF_ARTIFACT_UPLOAD_REPO_PATH: "product-prod-release/product-v${{ github.run_number }}/"
+  REMOTE_REPO_PATH: "test-repo/run-v${{ github.run_number }}/"
 
 jobs:
   jfrog_deploy:
-    runs-on: [self-hosted, build]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout repository with submodules
@@ -24,8 +24,8 @@ jobs:
     - name: Upload Artifact to JFrog Artifactory
       uses: ravikansangara/base-project/.github/actions/jfrog-upload-artifact@main
       with: 
-        jf_url: ${{ vars.JF_URL }}
-        jf_username: ${{ secrets.JF_USER }}
-        jf_secret: ${{ secrets.JF_PASSWORD }}
+        artifactory_url: ${{ vars.ARTIFACTORY_URL }}
+        artifactory_username: ${{ secrets.ARTIFACTORY_USERNAME }}
+        artifactory_password: ${{ secrets.ARTIFACTORY_PASSWORD }}
         local_artifact_path: ${{ env.LOCAL_ARTIFACT_PATH }}
-        artifact_upload_repo_path: ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}
+        remote_repo_path: ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}
