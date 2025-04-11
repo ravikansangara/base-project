@@ -2,10 +2,31 @@ name: Upload Artifact to Artifactory
 
 on:
   workflow_dispatch:
+    inputs:
+      artifactory_url:
+        description: "Artifactory base URL"
+        required: true
+        default: "https://artifactory.matrixcomsec.org/artifactory"
 
-env:
-  LOCAL_ARTIFACT_PATH: "${{ github.workspace }}/README.md"
-  REMOTE_REPO_PATH: "test-repo/run-v${{ github.run_number }}/"
+      artifactory_username:
+        description: "Artifactory username"
+        required: true
+        default: "admin"
+
+      artifactory_password:
+        description: "Artifactory password/token"
+        required: true
+        default: "Matrix@123"
+
+      local_artifact_path:
+        description: "Absolute path to the local artifact"
+        required: false
+        default: "${{ github.workspace }}/README.md"
+
+      remote_repo_path:
+        description: "Artifactory remote repository path"
+        required: false
+        default: "test-repo/"
 
 jobs:
   jfrog_deploy:
@@ -20,8 +41,8 @@ jobs:
     - name: Upload Artifact to JFrog Artifactory
       uses: ravikansangara/base-project/.github/actions/jfrog-upload-artifact@main
       with: 
-        artifactory_url: ${{ vars.ARTIFACTORY_URL }}
-        artifactory_username: ${{ secrets.ARTIFACTORY_USERNAME }}
-        artifactory_password: ${{ secrets.ARTIFACTORY_PASSWORD }}
-        local_artifact_path: ${{ env.LOCAL_ARTIFACT_PATH }}
-        remote_repo_path: ${{ env.REMOTE_REPO_PATH }}
+        artifactory_url: ${{ github.event.inputs.artifactory_url }}
+        artifactory_username: ${{ github.event.inputs.artifactory_username }}
+        artifactory_password: ${{ github.event.inputs.artifactory_password }}
+        local_artifact_path: ${{ github.event.inputs.local_artifact_path }}
+        remote_repo_path: ${{ github.event.inputs.remote_repo_path }}
