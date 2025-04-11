@@ -24,4 +24,4 @@ jobs:
         artifactory_username: ${{ secrets.ARTIFACTORY_USERNAME }}
         artifactory_password: ${{ secrets.ARTIFACTORY_PASSWORD }}
         local_artifact_path: ${{ env.LOCAL_ARTIFACT_PATH }}
-        remote_repo_path: ${{ env.JF_ARTIFACT_UPLOAD_REPO_PATH }}
+        remote_repo_path: ${{ env.REMOTE_REPO_PATH }}
