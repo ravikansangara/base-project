@@ -56,38 +56,17 @@ runs:
         password = os.environ["artifactory_password"]
         local_path = os.environ["local_artifact_path"]
         remote_path = os.environ["remote_repo_path"]
-        server_id = os.environ["server_id"]
-
-        #---------------------------------------------------
-        # Add JFrog server config
-        #---------------------------------------------------
-        subprocess.run([
-            "jf", "c", "add", server_id,
-            f"--url={url}",
-            f"--user={username}",
-            f"--password={password}",
-            "--overwrite=true",
-            "--interactive=false",
-            "--insecure-tls=true"
-        ], check=True)
 
         #---------------------------------------------------
         # Upload artifact
         #---------------------------------------------------
         subprocess.run([
-            "jf", "rt", "upload",
-            local_path,
-            remote_path,
-            "--flat=true",
+            "jf", "rt", "u",
+            f"--url={url}",
+            f"--user={username}",
+            f"--password={password}",
             "--insecure-tls=true",
-            f"--server-id={server_id}"
-        ], check=True)
-
-        #---------------------------------------------------
-        # Remove server config
-        #---------------------------------------------------
-        subprocess.run([
-            "jf", "c", "delete",
-            "--quiet",
-            f"--server-id={server_id}"
+            "--flat=true",
+            local_path,
+            remote_path
         ], check=True)
