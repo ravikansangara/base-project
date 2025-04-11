@@ -21,7 +21,7 @@ on:
       local_artifact_path:
         description: "Absolute path to the local artifact"
         required: false
-        default: "${{ github.workspace }}/README.md"
+        default: "README.md"
 
       remote_repo_path:
         description: "Artifactory remote repository path"
