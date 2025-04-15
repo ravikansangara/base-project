@@ -44,7 +44,7 @@ jobs:
         submodules: recursive
 
     - name: Send Email Notification
-      uses: ravikansangara/base-project/.github/actions/workflow-email-notification
+      uses: ravikansangara/base-project/.github/actions/workflow-email-notification@main
       with: 
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
