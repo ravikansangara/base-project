@@ -42,7 +42,7 @@
                                 font-size: 18px;
                                 border-radius: 12px 12px 0 0;
                                 ">
-                                Workflow Completed Successfully!
+                                The Workflow Completed Successfully!
                             </td>
                         </tr>
 
@@ -61,7 +61,7 @@
                                     font-size: 18px;
                                     border-radius: 12px 12px 0 0;
                                 ">
-                                Workflow Failed to Complete!
+                                The Workflow Failed to Complete!
                             </td>
                         </tr>
                         
@@ -248,8 +248,8 @@
                                         <td style="padding-top: 10px">
 
                                         {% for artifact in ARTIFACTS %}
-                                        <div style="margin-bottom: 10px">
-                                            <span style="color: #444746">{{ artifact.label }}:</span><br />
+                                        <div style="margin-bottom: 20px">
+                                            <span style="color: #444746; font-weight: bold;">{{ artifact.label }}:</span><br />
                                             <a href="{{ artifact.url }}" style="color: #1e5de5; text-decoration: underline;">
                                             {{ artifact.url }}
                                             </a>
