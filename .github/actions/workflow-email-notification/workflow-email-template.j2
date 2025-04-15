@@ -93,15 +93,15 @@
                                         <td style="padding: 8px 0; color: #4f6368">
                                             Workflow Name:
                                         </td>
-                                        <td style="font-weight: bold">{{ WORKFLOW_NAME }} (<a
+                                        <td style="font-weight: bold">{{ WORKFLOW_NAME }} <a
                                                 href="{{ RUN_URL }}"
                                                 style="
                                                     color: #1e5de5;
                                                     text-decoration: underline;
                                                     font-weight: bold;
                                                 "
-                                                >#{{ RUN_NUMBER }}</a
-                                            >)</td>
+                                                >(#{{ RUN_NUMBER }})</a
+                                            ></td>
                                     </tr>
 
                                     <!-- Repository: -->
@@ -128,6 +128,12 @@
                                         <td style="font-weight: bold">{{ BRANCH_TAG }}</td>
                                     </tr>
 
+                                     <!-- Commit SHA -->
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #4f6368">Commit SHA:</td>
+                                        <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
+                                    </tr>
+
                                     <!-- Trigger Event: -->
                                     <tr>
                                         <td style="padding: 8px 0; color: #4f6368">
@@ -144,29 +150,6 @@
                                         <td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
                                     </tr>
 
-                                    <!-- Commit SHA -->
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #4f6368">Commit SHA:</td>
-                                        <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
-                                    </tr>
-
-                                    <!-- GitHub Run Number -->
-                                    <tr>
-                                        <td style="padding: 8px 0; color: #4f6368">
-                                            GitHub Run Number:
-                                        </td>
-                                        <td>
-                                            <a
-                                                href="{{ RUN_URL }}"
-                                                style="
-                                                    color: #1e5de5;
-                                                    text-decoration: underline;
-                                                    font-weight: bold;
-                                                "
-                                                >#{{ RUN_NUMBER }}</a
-                                            >
-                                        </td>
-                                    </tr>
                                 </table>
 
                             <!-- ----------------------------------------------------- -->
