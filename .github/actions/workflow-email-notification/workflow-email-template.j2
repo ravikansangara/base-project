@@ -89,7 +89,7 @@
 
                                     <!-- Workflow Name: -->
                                     <tr>
-                                        <td style="padding: 8px 15px; color: #4f6368">
+                                        <td style="padding: 8px 0; color: #4f6368">
                                             Workflow Name:
                                         </td>
                                         <td style="font-weight: bold">{{ WORKFLOW_NAME }} <a
@@ -105,7 +105,7 @@
 
                                     <!-- Repository: -->
                                     <tr>
-                                        <td style="padding: 8px 15px; color: #4f6368">Repository:</td>
+                                        <td style="padding: 8px 0; color: #4f6368">Repository:</td>
                                         <td>
                                             <a
                                                 href="https://github.com/{{ REPOSITORY }}"
@@ -121,7 +121,7 @@
 
                                     <!-- Branch/Tag Reference -->
                                     <tr>
-                                        <td style="padding: 8px 15px; color: #4f6368">
+                                        <td style="padding: 8px 0; color: #4f6368">
                                             Branch/Tag Reference:
                                         </td>
                                         <td style="font-weight: bold">{{ BRANCH_TAG }}</td>
@@ -129,13 +129,13 @@
 
                                      <!-- Commit SHA -->
                                     <tr>
-                                        <td style="padding: 8px 15px; color: #4f6368">Commit SHA:</td>
+                                        <td style="padding: 8px 0; color: #4f6368">Commit SHA:</td>
                                         <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
                                     </tr>
 
                                     <!-- Trigger Event: -->
                                     <tr>
-                                        <td style="padding: 8px 15px; color: #4f6368">
+                                        <td style="padding: 8px 0; color: #4f6368">
                                             Trigger Event:
                                         </td>
                                         <td style="font-weight: bold">{{ TRIGGER_EVENT }}</td>
@@ -143,7 +143,7 @@
 
                                     <!-- Triggered By -->
                                     <tr>
-                                        <td style="padding: 8px 15px; color: #4f6368">
+                                        <td style="padding: 8px 0; color: #4f6368">
                                             Triggered By:
                                         </td>
                                         <td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
@@ -181,7 +181,7 @@
                                                     color: #444746;
                                                     font-size: 13px;
                                                     font-weight: bold;
-                                                    padding: 10px 15px;
+                                                    padding: 10px 0;
                                             ">
                                             🚀 &nbsp;What's New
                                         </td>
@@ -208,7 +208,7 @@
                                             color: #444746;
                                             font-size: 13px;
                                             font-weight: bold;
-                                            padding: 10px 15px;
+                                            padding: 10px 0;
                                         ">
                                         🐞 &nbsp;Bug Fixes
                                         </td>
@@ -246,7 +246,7 @@
 
                                     <tr>
             <td colspan="2" style="padding-top: 10px;">
-                <ul style="margin: 0; padding: 0 0 0 20px; list-style-type: none;">
+                <ul style="margin: 0; padding: 0; list-style-type: none;">
                     {% for artifact in ARTIFACTS %}
                         <li style="margin-bottom: 15px;">
                             <span style="font-weight: bold; color: #4f6368;">{{ artifact.label }}:</span><br />
