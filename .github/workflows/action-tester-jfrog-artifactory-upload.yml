@@ -39,7 +39,7 @@ jobs:
         submodules: recursive
 
     - name: Upload Artifact to JFrog Artifactory
-      uses: matrix-devsecops/automation-toolkit/.github/actions/jfrog-artifactory-upload@main
+      uses: ravikansangara/base-project/.github/actions/jfrog-upload-artifact@main
       with: 
         artifactory_url: ${{ github.event.inputs.artifactory_url }}
         artifactory_username: ${{ github.event.inputs.artifactory_username }}

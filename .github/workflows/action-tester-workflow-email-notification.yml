@@ -44,7 +44,7 @@ jobs:
         submodules: recursive
 
     - name: Send Email Notification
-      uses: matrix-devsecops/automation-toolkit/.github/actions/workflow-email-notification@main
+      uses: ravikansangara/base-project/.github/actions/workflow-email-notification
       with: 
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_PASSWORD }}
