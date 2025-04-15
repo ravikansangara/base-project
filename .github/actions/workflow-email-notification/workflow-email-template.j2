@@ -93,7 +93,15 @@
                                         <td style="padding: 8px 0; color: #4f6368">
                                             Workflow Name:
                                         </td>
-                                        <td style="font-weight: bold">{{ WORKFLOW_NAME }}</td>
+                                        <td style="font-weight: bold">{{ WORKFLOW_NAME }} (<a
+                                                href="{{ RUN_URL }}"
+                                                style="
+                                                    color: #1e5de5;
+                                                    text-decoration: underline;
+                                                    font-weight: bold;
+                                                "
+                                                >#{{ RUN_NUMBER }}</a
+                                            >)</td>
                                     </tr>
 
                                     <!-- Repository: -->
@@ -136,11 +144,13 @@
                                         <td style="font-weight: bold">{{ TRIGGERED_BY }}</td>
                                     </tr>
 
-                                    <!-- GitHub Run Number -->
+                                    <!-- Commit SHA -->
                                     <tr>
                                         <td style="padding: 8px 0; color: #4f6368">Commit SHA:</td>
                                         <td style="font-weight: bold">{{ COMMIT_SHA }}</td>
                                     </tr>
+
+                                    <!-- GitHub Run Number -->
                                     <tr>
                                         <td style="padding: 8px 0; color: #4f6368">
                                             GitHub Run Number:
@@ -188,7 +198,7 @@
                                             colspan="2"
                                             style="
                                                     color: #4f6368;
-                                                    font-size: 14px;
+                                                    font-size: 13px;
                                                     font-weight: bold;
                                                     padding: 10px 0;
                                             ">
@@ -215,7 +225,7 @@
                                         colspan="2"
                                         style="
                                             color: #4f6368;
-                                            font-size: 14px;
+                                            font-size: 13px;
                                             font-weight: bold;
                                             padding: 10px 0;
                                         ">
