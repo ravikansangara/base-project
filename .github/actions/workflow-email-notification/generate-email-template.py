@@ -1,6 +1,13 @@
 import os
+import json
 import argparse
 from jinja2 import Environment, FileSystemLoader
+
+def parse_env_json(key):
+    try:
+        return json.loads(os.getenv(key, "[]"))
+    except Exception:
+        return []
 
 def main():
     parser = argparse.ArgumentParser(description="Generates HTML file from Jinja2 template using environment variables.")
@@ -8,10 +15,9 @@ def main():
     parser.add_argument("--output", default="output-email.html", help="Output HTML file path")
     args = parser.parse_args()
 
-    # Build context from environment variables
+    # Build context from environment variables only
     context = {
-
-        # GitHub workflow metadata
+        # GitHub workflow metadata from env
         "REPOSITORY": os.getenv("REPOSITORY", "unknown/repo"),
         "WORKFLOW_NAME": os.getenv("WORKFLOW_NAME", "Unnamed Workflow"),
         "TRIGGER_EVENT": os.getenv("TRIGGER_EVENT", "unknown"),
@@ -24,12 +30,12 @@ def main():
         # Workflow status
         "WORKFLOW_SUCCESS": os.getenv("WORKFLOW_SUCCESS", "false").lower() == "true",
 
-        # Changelog
-        "WHATS_NEW": os.getenv("WHATS_NEW", "[]"),
-        "BUG_FIXES": os.getenv("BUG_FIXES", "[]"),
+        # Changelog entries from env
+        "WHATS_NEW": parse_env_json("WHATS_NEW"),
+        "BUG_FIXES": parse_env_json("BUG_FIXES"),
 
-        # Artifacts
-        "ARTIFACTS": os.getenv("ARTIFACTS", "[]")
+        # Artifacts from env
+        "ARTIFACTS": parse_env_json("ARTIFACTS")
     }
 
     # Load and render template
