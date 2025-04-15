@@ -65,9 +65,9 @@ runs:
         repo = os.environ.get("REPOSITORY", "")
 
         if workflow_success:
-            email_subject = f"🌤 [Workflow] {workflow_name} #{run_number} of [{repo}] completed successfully!"
+            email_subject = f"🌤 [Github Workflow Success] {workflow_name} #{run_number} - [{repo}] - ${{ github.ref_name }}"
         else:
-            email_subject = f"🌦️ [Workflow] {workflow_name} #{run_number} of [{repo}] failed to complete!"
+            email_subject = f"🌦️ [Github Workflow Failure] {workflow_name} #{run_number} - [{repo}] - ${{ github.ref_name }}"
 
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
           f.write(f"subject={email_subject}\n")

@@ -1,13 +1,6 @@
 import os
-import json
 import argparse
 from jinja2 import Environment, FileSystemLoader
-
-def parse_env_json(key):
-    try:
-        return json.loads(os.getenv(key, "[]"))
-    except Exception:
-        return []
 
 def main():
     parser = argparse.ArgumentParser(description="Generates HTML file from Jinja2 template using environment variables.")
@@ -15,27 +8,28 @@ def main():
     parser.add_argument("--output", default="output-email.html", help="Output HTML file path")
     args = parser.parse_args()
 
-    # Build context from environment variables only
+    # Build context from environment variables
     context = {
-        # GitHub workflow metadata from env
+
+        # GitHub workflow metadata
         "REPOSITORY": os.getenv("REPOSITORY", "unknown/repo"),
         "WORKFLOW_NAME": os.getenv("WORKFLOW_NAME", "Unnamed Workflow"),
-        "BRANCH_TAG": os.getenv("BRANCH_TAG", "unknown"),
-        "COMMIT_SHA": os.getenv("COMMIT_SHA", "abc123"),
         "TRIGGER_EVENT": os.getenv("TRIGGER_EVENT", "unknown"),
         "TRIGGERED_BY": os.getenv("TRIGGERED_BY", "github-user"),
+        "BRANCH_TAG": os.getenv("BRANCH_TAG", "unknown"),
+        "COMMIT_SHA": os.getenv("COMMIT_SHA", "abc123"),
         "RUN_NUMBER": os.getenv("RUN_NUMBER", "#0"),
         "RUN_URL": os.getenv("RUN_URL", "#unknown"),
 
         # Workflow status
         "WORKFLOW_SUCCESS": os.getenv("WORKFLOW_SUCCESS", "false").lower() == "true",
 
-        # Changelog entries from env
-        "WHATS_NEW": parse_env_json("WHATS_NEW"),
-        "BUG_FIXES": parse_env_json("BUG_FIXES"),
+        # Changelog
+        "WHATS_NEW": os.getenv("WHATS_NEW", "[]"),
+        "BUG_FIXES": os.getenv("BUG_FIXES", "[]"),
 
-        # Artifacts from env
-        "ARTIFACTS": parse_env_json("ARTIFACTS")
+        # Artifacts
+        "ARTIFACTS": os.getenv("ARTIFACTS", "[]")
     }
 
     # Load and render template
