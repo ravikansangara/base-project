@@ -35,14 +35,13 @@ runs:
         version: 'latest'
 
     - name: Upload artifact to Artifactory
-      shell: python
+      shell: python3
       env:
         artifactory_url: ${{ inputs.artifactory_url }}
         artifactory_username: ${{ inputs.artifactory_username }}
         artifactory_password: ${{ inputs.artifactory_password }}
         local_artifact_path: ${{ inputs.local_artifact_path }}
         remote_repo_path: ${{ inputs.remote_repo_path }}
-        server_id: "mx-artifactory"
       run: |
         import os
         import subprocess
