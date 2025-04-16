@@ -52,6 +52,7 @@ runs:
         WORKFLOW_NAME: ${{ github.workflow }}
         RUN_NUMBER: ${{ github.run_number }}
         REPOSITORY: ${{ github.repository }}
+        BRANCH_TAG: ${{ github.ref_name }}
       run: |
         import os
 
@@ -59,11 +60,12 @@ runs:
         workflow_name = os.environ.get("WORKFLOW_NAME", "")
         run_number = os.environ.get("RUN_NUMBER", "")
         repo = os.environ.get("REPOSITORY", "")
+        branch_tag = os.environ.get("BRANCH_TAG", "")
 
         if workflow_success:
-            email_subject = f"🌤 [Workflow Success] {workflow_name} #{run_number} • {repo} • ${{ github.ref_name }}"
+            email_subject = f"🌤 [Workflow Success] {workflow_name} #{run_number} • {repo} • {branch_tag}"
         else:
-            email_subject = f"🌦️ [Workflow Failure] {workflow_name} #{run_number} • {repo} • ${{ github.ref_name }}"
+            email_subject = f"🌦️ [Workflow Failure] {workflow_name} #{run_number} • {repo} • {branch_tag}"
 
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
           f.write(f"subject={email_subject}\n")
