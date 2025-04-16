@@ -14,13 +14,17 @@ inputs:
     required: true
     description: "SMTP password (app-specific or token)"
 
+  from:
+    required: true
+    description: "Sender's full name (Name <email-address>)"
+
   to:
     required: true
     description: "Comma-separated recipient email addresses"
 
   workflow_success:
     required: true
-    description: "Work flow status ('true' or 'false')"
+    description: "Workflow status ('true' or 'false')"
 
   whats_new:
     required: false
@@ -110,7 +114,7 @@ runs:
         server_port: 587
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
-        from: ${{ inputs.username }}
+        from: ${{ inputs.from }}
         to: ${{ inputs.to }}
         subject: ${{ steps.email_subject.outputs.subject }}
         html_body: file://${{ steps.email_body.outputs.html_body }}

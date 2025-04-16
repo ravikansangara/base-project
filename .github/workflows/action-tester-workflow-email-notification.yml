@@ -3,6 +3,14 @@ name: Action Tester - Workflow Email Notification
 on:
   workflow_dispatch:
     inputs:
+      username:
+        required: true
+        description: "SMTP username (email address)"
+
+      password:
+        required: true
+        description: "SMTP password"
+
       to_addresses:
         description: 'Comma-separated email recipients'
         required: true
@@ -46,8 +54,9 @@ jobs:
     - name: Send Email Notification
       uses: ravikansangara/base-project/.github/actions/workflow-email-notification@main
       with: 
-        username: ${{ secrets.GMAIL_USERNAME }}
-        password: ${{ secrets.GMAIL_PASSWORD }}
+        username: ${{ github.event.inputs.username }}
+        password: ${{ github.event.inputs.password }}
+        from: ${{ github.event.inputs.username }}
         to: ${{ github.event.inputs.to_addresses }}
         workflow_success: ${{ github.event.inputs.status == 'success' && 'true' || 'false' }}
         whats_new: ${{ github.event.inputs.whats_new }}
