@@ -11,6 +11,10 @@ on:
         required: true
         description: "SMTP password"
 
+      from:
+        required: true
+        description: "Sender's full name (Name <email-address>)"
+
       to_addresses:
         description: 'Comma-separated email recipients'
         required: true
@@ -56,7 +60,7 @@ jobs:
       with: 
         username: ${{ github.event.inputs.username }}
         password: ${{ github.event.inputs.password }}
-        from: ${{ github.event.inputs.username }}
+        from: ${{ github.event.inputs.from }}
         to: ${{ github.event.inputs.to_addresses }}
         workflow_success: ${{ github.event.inputs.status == 'success' && 'true' || 'false' }}
         whats_new: ${{ github.event.inputs.whats_new }}
