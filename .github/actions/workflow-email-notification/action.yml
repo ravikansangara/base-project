@@ -67,9 +67,9 @@ runs:
         branch_tag = os.environ.get("BRANCH_TAG", "")
 
         if workflow_success:
-            email_subject = f"🌤 [Workflow Success] {workflow_name} #{run_number} • {repo} • {branch_tag}"
+            email_subject = f"🌤 [Run Success] {workflow_name} #{run_number} • {repo} • {branch_tag}"
         else:
-            email_subject = f"🌦️ [Workflow Failure] {workflow_name} #{run_number} • {repo} • {branch_tag}"
+            email_subject = f"🌦️ [Run Failure] {workflow_name} #{run_number} • {repo} • {branch_tag}"
 
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
           f.write(f"subject={email_subject}\n")
