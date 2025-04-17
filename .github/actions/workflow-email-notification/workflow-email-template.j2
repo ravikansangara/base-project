@@ -9,9 +9,10 @@
 		style="
 			margin: 0;
 			padding: 0;
+			box-sizing: border-box;
 			background-color: #e9eef6;
-			font-family: 'Segoe UI', system-ui, sans-serif;
-			color: #2f3338;
+			font-family: system-ui, 'Segoe UI', sans-serif;
+			color: #202124;
 		">
 		<table width="100%" style="padding: 30px 0; border-spacing: 0">
 			<tr>
@@ -42,11 +43,15 @@
                                     font-size: 20px;
                                     border-radius: 12px 12px 0 0;
                                 ">
-                                <img width="32" height="32"
+                                <img
+                                    width="32"
+                                    height="32"
                                     src="https://img.icons8.com/ffffff/windows/128/ok.png"
                                     alt=""
                                     style="vertical-align: middle; margin-right: 4px;"/>
-                                The Workflow Completed Successfully!
+                                <span style="vertical-align: middle"
+									>The Workflow Completed Successfully!</span
+								>
                             </td>
                         </tr>
 
@@ -70,7 +75,9 @@
                                     src="https://img.icons8.com/ffffff/windows/128/cancel.png"
                                     alt=""
                                     style="vertical-align: middle; margin-right: 4px"/>
-                                The Workflow Failed to Complete!
+                                <span style="vertical-align: middle"
+									>The Workflow Failed to Complete!</span
+								>
                             </td>
                         </tr>
                         
@@ -92,11 +99,13 @@
                                                 font-size: 16px;
                                                 padding-bottom: 10px;
                                             ">
-                                            <img width="24" height="24"
-                                                src="https://img.icons8.com/2f3338/material-outlined/128/bill.png"
+                                            <img
+                                                width="24"
+                                                height="24"
+                                                src="https://img.icons8.com/2f3338/windows/128/task.png"
                                                 alt=""
                                                 style="vertical-align: middle; margin-right: 4px;" />
-                                            Run Summary
+                                            <span style="vertical-align: middle">Run Summary</span>
                                         </td>
                                     </tr>
 
@@ -179,11 +188,13 @@
                                                     font-size: 16px;
                                                     padding-bottom: 10px;
                                             ">
-                                            <img width="24" height="24"
-                                                src="https://img.icons8.com/2f3338/material-rounded/128/time-machine.png"
-                                                alt=""
-                                                style="vertical-align: middle; margin-right: 4px;" />
-                                            Changelog
+                                            <img
+												width="24"
+												height="24"
+												src="https://img.icons8.com/2f3338/windows/128/time-machine.png"
+												alt=""
+												style="vertical-align: middle; margin-right: 4px" />
+											<span style="vertical-align: middle">Changelog</span>
                                         </td>
                                     </tr>
 
@@ -205,7 +216,13 @@
                                                     font-weight: bold;
                                                     padding: 20px 0 0 0;
                                             ">
-                                            🚀 &nbsp;What's New
+                                            <img
+												width="24"
+												height="24"
+												src="https://img.icons8.com/2f3338/windows/128/light-on.png"
+												alt=""
+												style="vertical-align: middle; margin-right: 4px" />
+											<span style="vertical-align: middle">What's New</span>
                                         </td>
                                     </tr>
                                     
@@ -226,13 +243,19 @@
                                     {% if BUG_FIXES %}
                                     <tr>
                                         <td
-                                        colspan="2"
-                                        style="
-                                            font-size: 13px;
-                                            font-weight: bold;
-                                            padding: 20px 0 0 0;
-                                        ">
-                                        🐞 &nbsp;Bug Fixes
+                                            colspan="2"
+                                            style="
+                                                font-size: 13px;
+                                                font-weight: bold;
+                                                padding: 20px 0 0 0;
+                                            ">
+                                            <img
+                                                width="24"
+                                                height="24"
+                                                src="https://img.icons8.com/2f3338/windows/128/bug.png"
+                                                alt=""
+                                                style="vertical-align: middle; margin-right: 4px" />
+                                            <span style="vertical-align: middle">Bug Fixes</span>
                                         </td>
                                     </tr>
                                     <tr>
@@ -256,13 +279,19 @@
                                 <table width="100%" style="border-spacing: 0">
                                     <tr>
                                         <td
-                                        style="
-                                            padding: 0;
-                                            border-spacing: 0;
-                                            font-size: 16px;
-                                            padding-bottom: 10px;
-                                        ">
-                                        📦 &nbsp;Artifacts
+                                            style="
+                                                padding: 0;
+                                                border-spacing: 0;
+                                                font-size: 16px;
+                                                padding-bottom: 10px;
+                                            ">
+                                            <img
+                                                width="24"
+                                                height="24"
+                                                src="https://img.icons8.com/2f3338/windows/128/packing.png"
+                                                alt=""
+                                                style="vertical-align: middle; margin-right: 4px" />
+                                            <span style="vertical-align: middle">Artifacts</span>
                                         </td>
                                     </tr>
 
