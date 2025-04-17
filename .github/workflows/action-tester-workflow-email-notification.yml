@@ -1,6 +1,7 @@
 name: Action Tester - Workflow Email Notification
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       username:
