@@ -6,6 +6,7 @@ on:
       username:
         required: true
         description: "SMTP username (email address)"
+        default: 'kansangara.ravi@gmail.com'
 
       password:
         required: true
@@ -14,6 +15,7 @@ on:
       from:
         required: true
         description: "Sender's full name (Name <email-address>)"
+        default: 'Ravi Kansangara <kansangara.ravi@gmail.com>'
 
       to_addresses:
         description: 'Comma-separated email recipients'

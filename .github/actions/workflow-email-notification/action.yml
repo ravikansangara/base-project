@@ -40,9 +40,7 @@ inputs:
 
 runs:
   using: "composite"
-
   steps:
-
     - name: Install jinja2 package
       shell: sh
       run: |
@@ -69,9 +67,9 @@ runs:
         commit_short_sha = os.environ.get("COMMIT_SHA", "")[:7]
 
         if workflow_success:
-            email_subject = f"🌤 [{repo}] Run #{run_number} Success • {workflow_name} • {branch_tag} ({commit_short_sha})"
+            email_subject = f"🌤 [{repo}] Run Success: {workflow_name} #{run_number} • {branch_tag} ({commit_short_sha})"
         else:
-            email_subject = f"🌦️ [Run Failure] {repo} • {workflow_name} #{run_number} • {branch_tag}"
+            email_subject = f"🌦️ [{repo}] Run Failure: {workflow_name} #{run_number} • {branch_tag} ({commit_short_sha})"
 
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
           f.write(f"subject={email_subject}\n")
