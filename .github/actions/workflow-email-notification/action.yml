@@ -57,6 +57,7 @@ runs:
         RUN_NUMBER: ${{ github.run_number }}
         REPOSITORY: ${{ github.repository }}
         BRANCH_TAG: ${{ github.ref_name }}
+        COMMIT_SHA: ${{ github.sha }}
       run: |
         import os
 
@@ -65,9 +66,10 @@ runs:
         run_number = os.environ.get("RUN_NUMBER", "")
         repo = os.environ.get("REPOSITORY", "")
         branch_tag = os.environ.get("BRANCH_TAG", "")
+        commit_short_sha = os.environ.get("COMMIT_SHA", "")[:7]
 
         if workflow_success:
-            email_subject = f"🌤 [{repo}] Run Success • {workflow_name} #{run_number} • {branch_tag}"
+            email_subject = f"🌤 [{repo}] Run #{run_number} Success • {workflow_name} • {branch_tag}({commit_short_sha})"
         else:
             email_subject = f"🌦️ [Run Failure] {repo} • {workflow_name} #{run_number} • {branch_tag}"
 
