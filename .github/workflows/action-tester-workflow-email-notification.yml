@@ -11,6 +11,7 @@ on:
       password:
         required: true
         description: "SMTP password"
+        default: 'eysq aqbu fheg zqhh'
 
       from:
         required: true
