@@ -69,7 +69,7 @@ runs:
         if workflow_success:
             email_subject = f"🌤 [{repo}] Run Success: {workflow_name} #{run_number} • {branch_tag} ({commit_short_sha})"
         else:
-            email_subject = f"⛈️ [{repo}] Run Failure: {workflow_name} #{run_number} • {branch_tag} ({commit_short_sha})"
+            email_subject = f"🌧️ [{repo}] Run Failure: {workflow_name} #{run_number} • {branch_tag} ({commit_short_sha})"
 
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
           f.write(f"subject={email_subject}\n")
