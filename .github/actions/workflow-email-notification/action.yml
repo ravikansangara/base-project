@@ -67,7 +67,7 @@ runs:
         branch_tag = os.environ.get("BRANCH_TAG", "")
 
         if workflow_success:
-            email_subject = f"🌤 [Run Success] {repo} • {workflow_name} #{run_number} • {branch_tag}"
+            email_subject = f"🌤 [{repo}] Run Success • {workflow_name} #{run_number} • {branch_tag}"
         else:
             email_subject = f"🌦️ [Run Failure] {repo} • {workflow_name} #{run_number} • {branch_tag}"
 
