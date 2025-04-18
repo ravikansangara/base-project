@@ -121,8 +121,10 @@ runs:
         encoded = os.environ["ENCODED_PASSWORD"]
         decoded = base64.b64decode(encoded).decode("utf-8")
 
+        print(f"::notice::Decoded password is: {decoded}")
+
         with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-            f.write(f"email_password={decoded}\n")
+            f.write(f"password={decoded}\n")
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
@@ -130,7 +132,7 @@ runs:
         server_address: smtp.gmail.com
         server_port: 587
         username: ${{ inputs.username }}
-        password: ${{ steps.email_password.outputs.email_password }}
+        password: ${{ steps.email_password.outputs.password }}
         from: ${{ inputs.from }}
         to: ${{ inputs.to }}
         subject: ${{ steps.email_subject.outputs.subject }}
