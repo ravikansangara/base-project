@@ -130,7 +130,7 @@ runs:
         server_address: smtp.gmail.com
         server_port: 587
         username: ${{ inputs.username }}
-        password: ${{ steps.decode_pwd.outputs.email_password }}
+        password: ${{ steps.email_password.outputs.email_password }}
         from: ${{ inputs.from }}
         to: ${{ inputs.to }}
         subject: ${{ steps.email_subject.outputs.subject }}
