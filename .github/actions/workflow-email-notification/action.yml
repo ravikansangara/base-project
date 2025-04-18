@@ -9,7 +9,7 @@ inputs:
   username:
     required: true
     description: "SMTP username (email address)"
-    default: "github.admin@matrixcomsec.com"
+    default: "devops.admin@matrixcomsec.com"
 
   password:
     required: true
