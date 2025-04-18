@@ -1,0 +1,15 @@
+name: Reusable
+
+on:
+  workflow_call:
+    inputs:
+      param:
+        required: true
+        type: string
+
+
+jobs:
+  build:
+    runs-on: windows-latest  # IGNORED, caller's runner is used
+    steps:
+      - run: echo "Param is ${{ inputs.param }}"
