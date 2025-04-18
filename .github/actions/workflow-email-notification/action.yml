@@ -124,7 +124,7 @@ runs:
         with open(os.environ["GITHUB_OUTPUT"], "a") as f:
             f.write(f"password={decoded}\n")
 
-        print(f"::add-mask::{password}")
+        print(f"::add-mask::{decoded}")
 
     - name: Send email
       uses: dawidd6/action-send-mail@v3
