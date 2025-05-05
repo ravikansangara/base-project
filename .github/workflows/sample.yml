@@ -52,7 +52,6 @@ jobs:
   project_build:
     needs: [setup_runner]
     runs-on: ${{ fromJSON(needs.setup_runner.outputs.runs_on) }}
-    timeout-minutes: 1  # Timeout for this job (if no runner is found)
     steps:
     - run: echo "My runner is ${{ needs.setup_runner.outputs.runs_on }}"
 
