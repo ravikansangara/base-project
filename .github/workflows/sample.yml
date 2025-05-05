@@ -7,13 +7,14 @@ jobs:
   setup_runner:
     runs-on: [ubuntu-latest]
     outputs:
-      runner_label: ${{ steps.generate_runner_label.outputs.label }}
+      label: ${{ steps.generate_runner_label.outputs.label }}
     steps:
       - name: Generate unique runner label
         id: generate_runner_label
         run: |
           REPO_NAME=$(basename $GITHUB_REPOSITORY)
           RUNNER_LABEL='["self-hosted", "docker-linux-${REPO_NAME}-${GITHUB_RUN_ID}"]'
+          echo "Setting runner name: ${RUNNER_LABEL}"
           echo "label=${RUNNER_LABEL}" >> $GITHUB_OUTPUT
 
   # Runs the actual build on the dynamic runner
