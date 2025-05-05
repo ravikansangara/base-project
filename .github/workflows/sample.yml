@@ -5,7 +5,7 @@ on:
 jobs:
   # Starts container and registers repo-level runner
   setup_runner:
-    runs-on: [ubuntu-latest]
+    runs-on: [self-hosted, org-runner]
     outputs:
       label: ${{ steps.generate_runner_label.outputs.label }}
     steps:
