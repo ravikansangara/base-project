@@ -1,6 +1,9 @@
-name: Dynamic Runner
+name: Workflow Template - Feature Build
+
 on:
-  workflow_dispatch:
+  workflow_dispatch:            # Allows manual triggering
+  schedule:                     # At 00:00 UTC every day
+    - cron: '0 0 * * *'
 
 env:
   ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
@@ -8,10 +11,12 @@ env:
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
   WORKFLOW_ACCESS_TOKEN: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
   ARTIFACTORY_LINUX_RUNNER_SETUP: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
-  DOCKER_IMAGE_NAME: github-runner:1.0
+  DOCKER_IMAGE_NAME: ${{ vars.DOCKER_REGISTRY }}/mx-linux-docker-images/gh-runner-nvrx-app:1.0.0
 
 jobs:
+  #--------------------------------------------------------
   # Starts container and registers repo-level runner
+  #--------------------------------------------------------
   setup_runner:
     runs-on: [self-hosted, org-runner]
     outputs:
@@ -47,32 +52,56 @@ jobs:
             -e GITHUB_FORCE_REMOVE_RUNNER="true" \
             ${{ env.DOCKER_IMAGE_NAME }}
 
-          echo "Start container and register runner"
-
+          # Check the running container
           docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"
 
+          echo "Start container and register runner"
+
       # Wait for a short period to allow runner registration
-      - name: Wait for runner to register
+      - name: Wait for runner to register to repository
         run: sleep 20
 
       # Display the logs without following
-      - name: Show Docker container logs
+      - name: Print Docker container logs
         run: |
           docker logs ${{ steps.generate_runner_label.outputs.label }}
 
+  #--------------------------------------------------------
   # Runs the actual build on the dynamic runner
+  #--------------------------------------------------------
   project_build:
     needs: [setup_runner]
     runs-on: ${{ fromJSON(needs.setup_runner.outputs.runs_on) }}
     steps:
-    - run: echo "My runner is ${{ needs.setup_runner.outputs.runs_on }}"
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
 
+    - name: Setup build environment
+      run: |
+        echo "Setup build environment"
+
+    - name: Build the project
+      run: |
+        echo "Build the project"
+
+    - name: Upload build artifacts to artifactory
+      run: |
+        echo "Upload build artifacts to artifactory"
+
+    - name: Send an email notification
+      run: |
+        echo "Send an email notification"
+
+  #--------------------------------------------------------
   # Stops container and de-registers repo-level runner
+  #--------------------------------------------------------
   remove_runner:
     needs: [setup_runner, project_build]
     runs-on: [self-hosted, org-runner]
     steps:
     - run: |
         docker container stop ${{ needs.setup_runner.outputs.label }}
+        docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"
         echo "Stop container and de-register runner"
-
