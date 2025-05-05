@@ -8,6 +8,7 @@ jobs:
     runs-on: [self-hosted, org-runner]
     outputs:
       label: ${{ steps.generate_runner_label.outputs.label }}
+      runs_on: ${{ steps.generate_runner_label.outputs.runs_on }}
     steps:
       - name: Generate unique runner label
         id: generate_runner_label
@@ -16,13 +17,15 @@ jobs:
           RUN_NUMBER: ${{ github.run_number }}
         run: |
           REPO_NAME=$(basename ${REPO_NAME})
-          RUNNER_LABEL="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${RUN_NUMBER}\"]"
-          echo "Setting runner name: ${RUNNER_LABEL}"
+          RUNNER_LABEL="docker-linux-${REPO_NAME}-${RUN_NUMBER}"
+          RUNS_ON="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${RUN_NUMBER}\"]"
+          echo "Runner label: ${RUNNER_LABEL}"
           echo "label=${RUNNER_LABEL}" >> $GITHUB_OUTPUT
+          echo "runs_on=${RUNS_ON}" >> $GITHUB_OUTPUT
 
   # Runs the actual build on the dynamic runner
   execute_workflow:
     needs: [setup_runner]
-    runs-on: ${{ fromJSON(needs.setup_runner.outputs.label) }}
+    runs-on: ${{ fromJSON(needs.setup_runner.outputs.runs_on) }}
     steps:
-    - run: echo "My runner is ${{ needs.setup_runner.outputs.label }}"
+    - run: echo "My runner is ${{ needs.setup_runner.outputs.runs_on }}"
