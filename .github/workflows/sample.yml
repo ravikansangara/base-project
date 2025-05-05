@@ -3,22 +3,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
+  # Starts container and registers repo-level runner
+  setup_runner:
+    runs-on: [ubuntu-latest]
     outputs:
-      runner: ${{ steps.get_runner_label.outputs.runner }}
+      runner_label: ${{ steps.generate_runner_label.outputs.label }}
     steps:
-      - name: Get Runner Label
-        id: get_runner_label
+      - name: Generate unique runner label
+        id: generate_runner_label
         run: |
-          if [ ${{ github.ref }} == 'refs/heads/main' ]; then
-            echo "runner=ubuntu-latest" >> $GITHUB_OUTPUT
-          else
-            echo "runner=[self-hosted, docker-linux]" >> $GITHUB_OUTPUT
-          fi
+          REPO_NAME=$(basename $GITHUB_REPOSITORY)
+          RUNNER_LABEL='["self-hosted", "docker-linux-${REPO_NAME}-${GITHUB_RUN_ID}"]'
+          echo "label=${RUNNER_LABEL}" >> $GITHUB_OUTPUT
 
-  project_job:
-    needs: [setup]
-    runs-on: ${{ needs.setup.outputs.runner }}
+  # Runs the actual build on the dynamic runner
+  execute_workflow:
+    needs: [setup_runner]
+    runs-on: ${{ fromJSON(needs.setup_runner.outputs.label) }}
     steps:
-      - run: echo "My runner is ${{ needs.setup.outputs.runner }}"
+    - run: echo "My runner is ${{ needs.setup_runner.outputs.label }}"
