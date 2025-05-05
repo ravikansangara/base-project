@@ -45,10 +45,8 @@ jobs:
             ${{ env.DOCKER_IMAGE_NAME }}
 
           echo "Start container and register runner"
-          
-          sleep 2
-          
           docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"
+          docker logs ${{ steps.generate_runner_label.outputs.label }} --follow
 
   # Runs the actual build on the dynamic runner
   project_build:
