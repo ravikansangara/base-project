@@ -2,6 +2,13 @@ name: Dynamic Runner
 on:
   workflow_dispatch:
 
+env:
+  ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
+  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  ARTIFACTORY_LINUX_RUNNER_SETUP: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
+  DOCKER_IMAGE_NAME: github-runner:1.0
+
 jobs:
   # Starts container and registers repo-level runner
   setup_runner:
@@ -12,20 +19,46 @@ jobs:
     steps:
       - name: Generate unique runner label
         id: generate_runner_label
-        env:
-          REPO_NAME: ${{ github.repository }}
-          RUN_NUMBER: ${{ github.run_number }}
         run: |
-          REPO_NAME=$(basename ${REPO_NAME})
-          RUNNER_LABEL="docker-linux-${REPO_NAME}-${RUN_NUMBER}"
-          RUNS_ON="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${RUN_NUMBER}\"]"
+          REPO_NAME=$(basename ${GITHUB_REPOSITORY})
+          RUNNER_LABEL="docker-linux-${REPO_NAME}-${GITHUB_RUN_NUMBER}"
+          RUNS_ON="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${GITHUB_RUN_NUMBER}\"]"
           echo "Runner label: ${RUNNER_LABEL}"
+          
           echo "label=${RUNNER_LABEL}" >> $GITHUB_OUTPUT
           echo "runs_on=${RUNS_ON}" >> $GITHUB_OUTPUT
 
+      - name: Start Docker runner
+        run: |
+          docker run -d --rm -it \
+            --name ${{ steps.generate_runner_label.outputs.label }} \
+            -e ENABLE_GITHUB_RUNNER='true' \
+            -e ARTIFACTORY_URL='${{ env.ARTIFACTORY_URL }}' \
+            -e ARTIFACTORY_USERNAME='${{ env.ARTIFACTORY_USERNAME }}' \
+            -e ARTIFACTORY_PASSWORD='${{ env.ARTIFACTORY_PASSWORD }}' \
+            -e JFROG_ACTION_RUNNER_SETUP_PATH='${{ env.ARTIFACTORY_LINUX_RUNNER_SETUP }}' \
+            -e GITHUB_REPOSITORY='${GITHUB_REPOSITORY}' \
+            -e GITHUB_ACCESS_TOKEN='${{ secrets.GITHUB_TOKEN }}' \
+            -e GITHUB_ACTION_RUNNER_NAME='${{ steps.generate_runner_label.outputs.label }}' \
+            -e GITHUB_ACTION_RUNNER_LABELS='${{ steps.generate_runner_label.outputs.label }}' \
+            -e GITHUB_FORCE_REMOVE_RUNNER='true' \
+            ${{ env.DOCKER_IMAGE_NAME }}
+
+          echo "Start container and register runner"
+
   # Runs the actual build on the dynamic runner
-  execute_workflow:
+  project_build:
     needs: [setup_runner]
     runs-on: ${{ fromJSON(needs.setup_runner.outputs.runs_on) }}
     steps:
     - run: echo "My runner is ${{ needs.setup_runner.outputs.runs_on }}"
+
+  # Stops container and de-registers repo-level runner
+  remove_runner:
+    needs: [setup_runner, project_build]
+    runs-on: [self-hosted, org-runner]
+    steps:
+    - run: |
+        docker container stop ${{ needs.setup_runner.outputs.label }}
+        echo "Stop container and de-register runner"
+
