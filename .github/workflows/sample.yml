@@ -13,10 +13,10 @@ jobs:
         id: generate_runner_label
         env:
           REPO_NAME: ${{ github.repository }}
-          RUN_ID: ${{ github.run_number }}
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
           REPO_NAME=$(basename ${REPO_NAME})
-          RUNNER_LABEL="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${RUN_ID}\"]"
+          RUNNER_LABEL="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${RUN_NUMBER}\"]"
           echo "Setting runner name: ${RUNNER_LABEL}"
           echo "label=${RUNNER_LABEL}" >> $GITHUB_OUTPUT
 
