@@ -30,7 +30,7 @@ jobs:
 
       - name: Start Docker runner
         run: |
-          docker run -d --rm -it \
+          docker run -d --rm \
             --name ${{ steps.generate_runner_label.outputs.label }} \
             -e ENABLE_GITHUB_RUNNER='true' \
             -e ARTIFACTORY_URL='${{ env.ARTIFACTORY_URL }}' \
@@ -45,6 +45,10 @@ jobs:
             ${{ env.DOCKER_IMAGE_NAME }}
 
           echo "Start container and register runner"
+
+          sleep 5
+
+          docker ps
 
   # Runs the actual build on the dynamic runner
   project_build:
