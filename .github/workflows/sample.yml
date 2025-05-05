@@ -1,12 +1,24 @@
-name: Sample Workflow
-
+name: Dynamic Runner
 on:
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
-  sample-job:
-    runs-on: [self-hosted, build]
-
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ steps.get_runner_label.outputs.runner }}
     steps:
-    - name: Print a message
-      run: echo "Hello World!"
+      - name: Get Runner Label
+        id: get_runner_label
+        run: |
+          if [ ${{ github.ref }} == 'refs/heads/main' ]; then
+            echo "runner=ubuntu-latest" >> $GITHUB_OUTPUT
+          else
+            echo "runner=[self-hosted, docker-linux]" >> $GITHUB_OUTPUT
+          fi
+
+  project_job:
+    needs: [setup]
+    runs-on: ${{ needs.setup.outputs.runner }}
+    steps:
+      - run: echo "My runner is ${{ needs.setup.outputs.runner }}"
