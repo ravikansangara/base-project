@@ -18,17 +18,19 @@ jobs:
       label: ${{ steps.generate_runner_label.outputs.label }}
       runs_on: ${{ steps.generate_runner_label.outputs.runs_on }}
     steps:
+      # Generate unique name/label for new runner
       - name: Generate unique runner label
         id: generate_runner_label
         run: |
           REPO_NAME=$(basename ${GITHUB_REPOSITORY})
-          RUNNER_LABEL="docker-linux-${REPO_NAME}-${GITHUB_RUN_NUMBER}"
-          RUNS_ON="[\"self-hosted\", \"docker-linux-${REPO_NAME}-${GITHUB_RUN_NUMBER}\"]"
+          RUNNER_LABEL="docker-${REPO_NAME}-${GITHUB_RUN_NUMBER}"
+          RUNS_ON="[\"self-hosted\", \"docker-${REPO_NAME}-${GITHUB_RUN_NUMBER}\"]"
           echo "Runner label: ${RUNNER_LABEL}"
           
           echo "label=${RUNNER_LABEL}" >> $GITHUB_OUTPUT
           echo "runs_on=${RUNS_ON}" >> $GITHUB_OUTPUT
 
+      # Start docker container
       - name: Start Docker runner
         run: |
           docker run -d --rm \
@@ -46,8 +48,17 @@ jobs:
             ${{ env.DOCKER_IMAGE_NAME }}
 
           echo "Start container and register runner"
+
           docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"
-          docker logs ${{ steps.generate_runner_label.outputs.label }} --follow
+
+      # Wait for a short period to allow runner registration
+      - name: Wait for runner to register
+        run: sleep 20
+
+      # Display the logs without following
+      - name: Show Docker container logs
+        run: |
+          docker logs ${{ steps.generate_runner_label.outputs.label }}
 
   # Runs the actual build on the dynamic runner
   project_build:
