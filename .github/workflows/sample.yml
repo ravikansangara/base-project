@@ -6,6 +6,7 @@ env:
   ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
   ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
   ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  WORKFLOW_ACCESS_TOKEN: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
   ARTIFACTORY_LINUX_RUNNER_SETUP: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
   DOCKER_IMAGE_NAME: github-runner:1.0
 
@@ -38,7 +39,7 @@ jobs:
             -e ARTIFACTORY_PASSWORD="${{ env.ARTIFACTORY_PASSWORD }}" \
             -e JFROG_ACTION_RUNNER_SETUP_PATH="${{ env.ARTIFACTORY_LINUX_RUNNER_SETUP }}" \
             -e GITHUB_REPO_NAME="${GITHUB_REPOSITORY}" \
-            -e GITHUB_ACCESS_TOKEN="${{ secrets.GITHUB_TOKEN }}" \
+            -e GITHUB_ACCESS_TOKEN="${{ env.WORKFLOW_ACCESS_TOKEN }}" \
             -e GITHUB_ACTION_RUNNER_NAME="${{ steps.generate_runner_label.outputs.label }}" \
             -e GITHUB_ACTION_RUNNER_LABELS="${{ steps.generate_runner_label.outputs.label }}" \
             -e GITHUB_FORCE_REMOVE_RUNNER="true" \
