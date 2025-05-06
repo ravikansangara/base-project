@@ -72,4 +72,4 @@ jobs:
       - name: Stop the Docker runner
         uses: ravikansangara/base-project/.github/actions/remove-linux-docker-runner@main
         with:
-          runner_label: ${{ needs.setup_runner.outputs.label }}
+          label: ${{ needs.setup_runner.outputs.label }}
