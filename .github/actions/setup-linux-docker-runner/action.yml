@@ -1,0 +1,85 @@
+#---------------------------------------------------
+# Composite action (Setup Docker Self-hosted Runner)
+#---------------------------------------------------
+
+name: Setup Dynamic Self-hosted Linux Docker Runner
+description: Starts a Docker container and registers it as a self-hosted GitHub Actions runner dynamically
+
+inputs:
+  docker_image:
+    required: true
+    description: "Docker image to start container"
+
+  artifactory_url:
+    required: true
+    description: "Artifactory base URL"
+
+  artifactory_username:
+    required: true
+    description: "Artifactory Authentication Username"
+
+  artifactory_password:
+    required: true
+    description: "Artifactory Authentication Password/Token"
+
+  runner_setup_path:
+    required: true
+    description: "Artifactory path to Actions Runner setup for Linux"
+
+  workflow_access_token:
+    required: true
+    description: "Workflow access token to call GitHub REST APIs"
+
+outputs:
+
+  label:
+    value: ${{ steps.generate_label.outputs.label }}
+    description: "Unique label assigned to the dynamic GitHub runner"
+
+  runs_on:
+    value: ${{ steps.generate_label.outputs.runs_on }}
+    description: "JSON array of runner labels to be used in the 'runs-on' field"
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Generate Dynamic Runner Label
+      id: generate_label
+      shell: bash
+      run: |
+        LABEL="docker-${GITHUB_REPOSITORY##*/}-${GITHUB_RUN_NUMBER}"
+        RUNS_ON="[\"self-hosted\", \"${LABEL}\"]"
+        echo "label=${LABEL}" >> $GITHUB_OUTPUT
+        echo "runs_on=${RUNS_ON}" >> $GITHUB_OUTPUT
+
+    - name: Start Docker runner
+      shell: bash
+      run: |
+        echo "Starting container and register runner"
+
+        docker run -d --rm \
+          --name ${{ steps.generate_label.outputs.label }} \
+          -e ENABLE_GITHUB_RUNNER=true \
+          -e ARTIFACTORY_URL="${{ inputs.artifactory_url }}" \
+          -e ARTIFACTORY_USERNAME="${{ inputs.artifactory_username }}" \
+          -e ARTIFACTORY_PASSWORD="${{ inputs.artifactory_password }}" \
+          -e JFROG_ACTION_RUNNER_SETUP_PATH="${{ inputs.runner_setup_path }}" \
+          -e GITHUB_REPO_NAME="${GITHUB_REPOSITORY}" \
+          -e GITHUB_ACCESS_TOKEN="${{ inputs.workflow_access_token }}" \
+          -e GITHUB_ACTION_RUNNER_NAME="${{ steps.generate_label.outputs.label }}" \
+          -e GITHUB_ACTION_RUNNER_LABELS="${{ steps.generate_label.outputs.label }}" \
+          -e GITHUB_FORCE_REMOVE_RUNNER=true \
+          ${{ inputs.docker_image }}
+
+        # Check the running container
+        echo "Running containers:"
+        docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"
+
+        # Wait for a short period to allow runner registration
+        echo "Waiting for a short period to allow runner registration..."
+        sleep 15
+
+        # Display the container logs
+        echo "Container logs:"
+        docker logs ${{ steps.generate_label.outputs.label }} || true
