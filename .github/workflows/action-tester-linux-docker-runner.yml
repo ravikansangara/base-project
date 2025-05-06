@@ -6,12 +6,6 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
-  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-  WORKFLOW_ACCESS_TOKEN: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
-  ARTIFACTORY_LINUX_RUNNER_SETUP: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
-  ORGANIZATION_RUNNER_LABEL: ${{ secrets.ORGANIZATION_RUNNER_LABEL }}
   DOCKER_IMAGE: ${{ vars.DOCKER_REGISTRY }}/gh-runner-nvrx-app:1.0.0
 
 jobs:
@@ -19,7 +13,7 @@ jobs:
   # Starts container and registers repo-level runner
   #--------------------------------------------------------
   setup_runner:
-    runs-on: ${{ fromJSON(env.ORGANIZATION_RUNNER_LABEL) }}
+    runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
     
     outputs:
       label: ${{ steps.start_runner.outputs.label }}
@@ -31,11 +25,11 @@ jobs:
       uses: ravikansangara/base-project/.github/actions/setup-linux-docker-runner@main
       with:
         docker_image: ${{ env.DOCKER_IMAGE }}
-        artifactory_url: ${{ env.ARTIFACTORY_URL }}
-        artifactory_username: ${{ env.ARTIFACTORY_USERNAME }}
-        artifactory_password: ${{ env.ARTIFACTORY_PASSWORD }}
-        runner_setup_path: ${{ env.ARTIFACTORY_LINUX_RUNNER_SETUP }}
-        workflow_access_token: ${{ env.WORKFLOW_ACCESS_TOKEN }}
+        artifactory_url: ${{ vars.ARTIFACTORY_URL }}
+        artifactory_username: ${{ secrets.ARTIFACTORY_USERNAME }}
+        artifactory_password: ${{ secrets.ARTIFACTORY_PASSWORD }}
+        runner_setup_path: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
+        workflow_access_token: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
 
   #--------------------------------------------------------
   # Runs the actual build on the dynamic runner
@@ -72,7 +66,7 @@ jobs:
   remove_runner:
     if: always()
     needs: [setup_runner, build_project]
-    runs-on: ${{ fromJSON(env.ORGANIZATION_RUNNER_LABEL) }}
+    runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
 
     steps:
       - name: Stop the Docker runner
