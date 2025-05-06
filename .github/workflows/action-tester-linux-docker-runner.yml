@@ -1,0 +1,81 @@
+name: Action Tester - Dynamic Linux Docker Runner
+
+on:
+  workflow_dispatch:            # Allows manual triggering
+  schedule:                     # At 00:00 UTC every day
+    - cron: '0 0 * * *'
+
+env:
+  ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
+  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  WORKFLOW_ACCESS_TOKEN: ${{ secrets.WORKFLOW_ACCESS_TOKEN }}
+  ARTIFACTORY_LINUX_RUNNER_SETUP: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
+  ORGANIZATION_RUNNER_LABEL: ${{ secrets.ORGANIZATION_RUNNER_LABEL }}
+  DOCKER_IMAGE: ${{ vars.DOCKER_REGISTRY }}/gh-runner-nvrx-app:1.0.0
+
+jobs:
+  #--------------------------------------------------------
+  # Starts container and registers repo-level runner
+  #--------------------------------------------------------
+  setup_runner:
+    runs-on: ${{ fromJSON(env.ORGANIZATION_RUNNER_LABEL) }}
+    
+    outputs:
+      label: ${{ steps.start_runner.outputs.label }}
+      runs_on: ${{ steps.start_runner.outputs.runs_on }}
+
+    steps:
+    - name: Start the Docker runner
+      id: start_runner
+      uses: ravikansangara/base-project/.github/actions/setup-linux-docker-runner@main
+      with:
+        docker_image: ${{ env.DOCKER_IMAGE }}
+        artifactory_url: ${{ env.ARTIFACTORY_URL }}
+        artifactory_username: ${{ env.ARTIFACTORY_USERNAME }}
+        artifactory_password: ${{ env.ARTIFACTORY_PASSWORD }}
+        runner_setup_path: ${{ env.ARTIFACTORY_LINUX_RUNNER_SETUP }}
+        workflow_access_token: ${{ env.WORKFLOW_ACCESS_TOKEN }}
+
+  #--------------------------------------------------------
+  # Runs the actual build on the dynamic runner
+  #--------------------------------------------------------
+  build_project:
+    needs: [setup_runner]
+    runs-on: ${{ fromJSON(needs.setup_runner.outputs.runs_on) }}
+    
+    steps:
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup build pre-requisites
+      run: |
+        echo ""
+
+    - name: Build the project
+      run: |
+        echo ""
+
+    - name: Upload build artifacts to artifactory
+      run: |
+        echo ""
+
+    - name: Send an email notification
+      run: |
+        echo ""
+
+  #--------------------------------------------------------
+  # Stops container and de-registers repo-level runner
+  #--------------------------------------------------------
+  remove_runner:
+    if: always()
+    needs: [setup_runner, build_project]
+    runs-on: ${{ fromJSON(env.ORGANIZATION_RUNNER_LABEL) }}
+
+    steps:
+      - name: Stop the Docker runner
+        uses: ravikansangara/base-project/.github/actions/remove-linux-docker-runner@main
+        with:
+          runner_label: ${{ needs.setup_runner.outputs.label }}
