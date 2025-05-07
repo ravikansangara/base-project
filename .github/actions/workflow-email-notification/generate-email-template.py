@@ -20,11 +20,11 @@ def main():
         # GitHub workflow metadata from env
         "REPOSITORY": os.getenv("GITHUB_REPOSITORY", "unknown/repo"),
         "WORKFLOW_NAME": os.getenv("GITHUB_WORKFLOW", "Unnamed Workflow"),
-        "TRIGGER_EVENT": os.getenv("TRIGGER_EVENT", "unknown"),
-        "TRIGGERED_BY": os.getenv("TRIGGERED_BY", "github-user"),
-        "BRANCH_TAG": os.getenv("BRANCH_TAG", "unknown"),
-        "COMMIT_SHA": os.getenv("COMMIT_SHA", "abc123"),
-        "RUN_NUMBER": os.getenv("RUN_NUMBER", "#0"),
+        "TRIGGER_EVENT": os.getenv("GITHUB_EVENT_NAME", "unknown"),
+        "TRIGGERED_BY": os.getenv("GITHUB_ACTOR", "github-user"),
+        "BRANCH_TAG": os.getenv("GITHUB_REF_NAME", "unknown"),
+        "COMMIT_SHA": os.getenv("GITHUB_SHA", "abc123"),
+        "RUN_NUMBER": os.getenv("GITHUB_RUN_NUMBER", "#0"),
         "RUN_URL": os.getenv("RUN_URL", "#unknown"),
 
         # Workflow status

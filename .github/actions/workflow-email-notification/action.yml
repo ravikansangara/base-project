@@ -81,12 +81,7 @@ runs:
       id: email_body
       shell: python
       env:
-        BRANCH_TAG: ${{ github.ref_name }}
-        COMMIT_SHA: ${{ github.sha }}
-        TRIGGER_EVENT: ${{ github.event_name }}
-        TRIGGERED_BY: ${{ github.actor }}
-        RUN_NUMBER: ${{ github.run_number }}
-        RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}     
+        RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
         WORKFLOW_SUCCESS: ${{ inputs.workflow_success }}
         WHATS_NEW: ${{ inputs.whats_new }}
         BUG_FIXES: ${{ inputs.bug_fixes }}
