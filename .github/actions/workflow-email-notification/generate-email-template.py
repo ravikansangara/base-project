@@ -19,7 +19,7 @@ def main():
     context = {
         # GitHub workflow metadata from env
         "REPOSITORY": os.getenv("GITHUB_REPOSITORY", "unknown/repo"),
-        "WORKFLOW_NAME": os.getenv("WORKFLOW_NAME", "Unnamed Workflow"),
+        "WORKFLOW_NAME": os.getenv("GITHUB_WORKFLOW", "Unnamed Workflow"),
         "TRIGGER_EVENT": os.getenv("TRIGGER_EVENT", "unknown"),
         "TRIGGERED_BY": os.getenv("TRIGGERED_BY", "github-user"),
         "BRANCH_TAG": os.getenv("BRANCH_TAG", "unknown"),

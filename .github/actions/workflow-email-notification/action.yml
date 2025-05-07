@@ -81,7 +81,6 @@ runs:
       id: email_body
       shell: python
       env:
-        WORKFLOW_NAME: ${{ github.workflow }}
         BRANCH_TAG: ${{ github.ref_name }}
         COMMIT_SHA: ${{ github.sha }}
         TRIGGER_EVENT: ${{ github.event_name }}
