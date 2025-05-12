@@ -26,4 +26,4 @@ jobs:
       shell: bash
       run: |
         echo "Running the build on: $(whoami)"
-        echo "tree $HOME/"
+        tree $HOME/
