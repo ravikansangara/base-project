@@ -25,5 +25,11 @@ jobs:
     - name: Build the project
       shell: bash
       run: |
-        echo "Running the build on: $(whoami)"
-        ls -alR $HOME/
+        echo "Getting container Details"
+        CONTAINER_ID=$(hostname)  # Get the container hostname
+        CONTAINER_IP=$(hostname -I | awk '{print $1}')
+        echo "Container ID: $CONTAINER_ID"
+        echo "Container IP: $CONTAINER_IP"
+        echo "Workspace: ${GITHUB_WORKSPACE}"
+
+        
