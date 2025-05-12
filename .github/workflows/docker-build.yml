@@ -5,14 +5,11 @@ on:
   schedule:
     - cron: '0 0 * * *'  # Daily at midnight UTC
 
-env:
-  DOCKER_IMAGE: ${{ vars.DOCKER_REGISTRY }}/gh-runner-nvrx-app:1.0.0
-
 jobs:
   build_project:
     runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
     container:
-      image: ${{ env.DOCKER_IMAGE }}
+      image: ${{ vars.DOCKER_REGISTRY }}/gh-runner-nvrx-app:1.0.0
       credentials:
         username: ${{ secrets.ARTIFACTORY_USERNAME }}
         password: ${{ secrets.ARTIFACTORY_PASSWORD }}
@@ -28,5 +25,4 @@ jobs:
     - name: Build the project
       shell: bash
       run: |
-        echo "Running the build on: $(hostname)"
-        sleep 30
+        echo "Running the build on: $(whoami)"
