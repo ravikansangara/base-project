@@ -1,0 +1,32 @@
+name: Docker Container Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight UTC
+
+env:
+  DOCKER_IMAGE: ${{ vars.DOCKER_REGISTRY }}/gh-runner-nvrx-app:1.0.0
+
+jobs:
+  build_project:
+    runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
+    container:
+      image: ${{ env.DOCKER_IMAGE }}
+      credentials:
+        username: ${{ secrets.ARTIFACTORY_USERNAME }}
+        password: ${{ secrets.ARTIFACTORY_PASSWORD }}
+      env:
+        ENABLE_GITHUB_RUNNER: false
+
+    steps:
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Build the project
+      shell: bash
+      run: |
+        echo "Running the build on: $(hostname)"
+        sleep 30
