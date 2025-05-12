@@ -26,5 +26,4 @@ jobs:
       shell: bash
       run: |
         echo "Running the build on: $(whoami)"
-        echo "Running containers:"
-        docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"
+        echo "tree $HOME/"
