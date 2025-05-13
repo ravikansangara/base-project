@@ -1,0 +1,28 @@
+name: Verify Checkout Tag or Branch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  checkout-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the selected branch or tag
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ref: ${{ github.ref }}  # Directly using the GitHub provided ref
+
+      # Step 2: Verify current branch or tag
+      - name: Verify checked-out branch or tag
+        run: |
+          echo "The selected branch/tag is: ${{ github.ref }}"
+          echo "Current branch or tag:"
+          git branch --show-current  # Displays the current branch or tag checked out
+
+      # Step 3: Run further build or validation steps if necessary
+      - name: Continue with further steps (Optional)
+        run: |
+          echo "Running further build steps for ${{ github.ref }}"
