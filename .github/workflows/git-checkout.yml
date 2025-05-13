@@ -16,11 +16,11 @@ jobs:
           ref: ${{ github.ref }}  # Directly using the GitHub provided ref
 
       # Step 2: Verify current branch or tag
-      - name: Verify checked-out branch or tag
+      - name: Verify checked-out ref
         run: |
-          echo "The selected branch/tag is: ${{ github.ref }}"
-          echo "Current branch or tag:"
-          git branch --show-current  # Displays the current branch or tag checked out
+          echo "Selected GitHub ref: ${{ github.ref }}"
+          echo -n "Current Git ref: "
+          git describe --tags --exact-match 2>/dev/null || git branch --show-current
 
       # Step 3: Run further build or validation steps if necessary
       - name: Continue with further steps (Optional)
