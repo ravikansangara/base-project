@@ -1,0 +1,26 @@
+name: Action Tester - Validate BUild Reference
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Select the release type"
+        required: true
+        default: 'feature'
+        type: choice
+        options:
+          - feature
+          - alpha
+          - beta
+          - rc
+          - production
+
+jobs:
+  validate-git-ref:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Validate Git Ref for selected release type
+        uses: matrix-devsecops/automation-toolkit/.github/actions/validate-build-ref@main
+        with:
+          release: ${{ github.event.inputs.release }}

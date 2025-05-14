@@ -1,0 +1,67 @@
+#---------------------------------------------------
+# Composite action (Validate Git reference for build)
+#---------------------------------------------------
+
+name: Validate Git Reference for given Release Type
+description: Validates the git branch/tag reference for different release types
+
+inputs:
+  release:
+    required: true
+    description: "The type of release (feature, alpha, beta, rc, production)."
+    default: "feature"
+
+runs:
+  using: "composite"
+  steps:
+  
+    - name: Validate Git Ref for Build
+      shell: python
+      run: |
+        import re
+        import sys
+        import os
+
+        # Get release type from input
+        release_type = "${{ inputs.release }}"
+
+        # GitHub ref from the environment
+        git_ref = "${{ github.ref }}"
+
+        print(f"Validating reference '{git_ref}' for release type '{release_type}'...")
+
+        # For feature build: validate 'feature/*' branches
+        if release_type == "feature":
+            if not re.match(r"^refs/heads/feature/.*$", git_ref):
+                print("Invalid branch for feature build: Only branches under 'feature/*' are allowed.")
+                sys.exit(1)
+
+        # For alpha build: validate 'develop' branch
+        elif release_type == "alpha":
+            if git_ref != "refs/heads/develop":
+                print("Invalid branch for alpha build: Alpha builds are only allowed from the 'develop' branch.")
+                sys.exit(1)
+
+        # For beta build: validate 'vX.Y.Z-beta.N' tag format
+        elif release_type == "beta":
+            if not re.match(r"^refs/tags/v\d+\.\d+\.\d+-beta\.\d+$", git_ref):
+                print("Invalid tag format for beta build: Tags should follow the format vX.Y.Z-beta.N (e.g., v1.2.3-beta.1).")
+                sys.exit(1)
+
+        # For RC build: validate 'vX.Y.Z-rc.N' tag format
+        elif release_type == "rc":
+            if not re.match(r"^refs/tags/v\d+\.\d+\.\d+-rc\.\d+$", git_ref):
+                print("Invalid tag format for RC build: Tags should follow the format vX.Y.Z-rc.N (e.g., v1.2.3-rc.1).")
+                sys.exit(1)
+
+        # For production build: validate 'vX.Y.Z' tag format
+        elif release_type == "production":
+            if not re.match(r"^refs/tags/v\d+\.\d+\.\d+$", git_ref):
+                print("Invalid tag format for production build: Tags should follow the format vX.Y.Z (e.g., v1.2.3).")
+                sys.exit(1)
+
+        else:
+            print(f"Unknown release type: {release_type}")
+            sys.exit(1)
+
+        print(f"Valid reference for {release_type} build: {git_ref}")
