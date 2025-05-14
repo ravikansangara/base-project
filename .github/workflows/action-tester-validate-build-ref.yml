@@ -21,6 +21,6 @@ jobs:
     
     steps:
       - name: Validate Git Ref for selected release type
-        uses: matrix-devsecops/automation-toolkit/.github/actions/validate-build-ref@main
+        uses: ravikansangara/base-project/.github/actions/validate-build-ref@main
         with:
           release: ${{ github.event.inputs.release }}
