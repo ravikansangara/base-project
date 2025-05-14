@@ -1,4 +1,4 @@
-name: Action Tester - Validate BUild Reference
+name: Action Tester - Validate Build Reference
 
 on:
   workflow_dispatch:
