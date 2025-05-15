@@ -12,4 +12,5 @@ jobs:
     steps:
     - name: Build the Project
       run: |
+        echo "Triggered on branch: ${{ github.ref }}"
         echo "Input param: ${{ inputs.param }}"

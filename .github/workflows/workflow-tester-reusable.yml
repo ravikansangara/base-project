@@ -9,7 +9,7 @@ jobs:
   find-branches:
     runs-on: ubuntu-latest
     outputs:
-      branches: ${{ steps.get-branches.outputs.branches }}
+      branches: ${{ steps.get-branches.outputs.branches_json }}
     steps:
       - name: Get feature branches
         id: get-branches
