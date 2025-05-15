@@ -24,4 +24,4 @@ jobs:
         branch: ${{ fromJson(needs.find-branches.outputs.branches) }}
     uses: ./.github/workflows/reusable.yml
     with:
-      param: "Hello World"
+      branch: ${{ matrix.branch }}

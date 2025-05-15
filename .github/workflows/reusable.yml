@@ -3,14 +3,20 @@ name: Reusable Workflow
 on:
   workflow_call:
     inputs:
-      param:
+      branch:
         required: true
         type: string
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Build the Project
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.branch }}
+
+    - name: Print input parameters
       run: |
-        echo "Triggered on branch: ${{ github.ref }}"
-        echo "Input param: ${{ inputs.param }}"
+        echo -n "Current Git ref: "
+        git describe --tags --exact-match 2>/dev/null || git branch --show-current
