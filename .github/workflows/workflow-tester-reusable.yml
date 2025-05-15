@@ -1,9 +1,9 @@
-name: Trigger reusable workflow for all feature branches
+name: Trigger reusable workflow for feature branches
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'  # every midnight UTC
+    - cron:  '*/2 * * * *'  # every 2 minutes
 
 jobs:
   find-branches:
