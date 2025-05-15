@@ -1,4 +1,4 @@
-name: Reusable
+name: Reusable Workflow
 
 on:
   workflow_call:
@@ -6,10 +6,10 @@ on:
       param:
         required: true
         type: string
-
-
 jobs:
   build:
-    runs-on: windows-latest  # IGNORED, caller's runner is used
+    runs-on: ubuntu-latest
     steps:
-      - run: echo "Param is ${{ inputs.param }}"
+    - name: Build the Project
+      run: |
+        echo "Input param: ${{ inputs.param }}"

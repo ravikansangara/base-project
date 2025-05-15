@@ -1,0 +1,27 @@
+name: Trigger reusable workflow for all feature branches
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # every midnight UTC
+
+jobs:
+  find-branches:
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.get-branches.outputs.branches }}
+    steps:
+      - name: Get feature branches
+        id: get-branches
+        run: |
+          FEATURE_BRANCHES=$(git ls-remote --heads https://github.com/${{ github.repository }} 'feature/*' | awk '{print "\"" $2 "\"" }' | paste -sd, -)
+          echo "branches_json=[${FEATURE_BRANCHES}]" >> "$GITHUB_OUTPUT"
+
+  call-reusable:
+    needs: find-branches
+    strategy:
+      matrix:
+        branch: ${{ fromJson(needs.find-branches.outputs.branches) }}
+    uses: ./.github/workflows/reusable.yml
+    with:
+      param: "Hello World"
