@@ -3,7 +3,7 @@ name: Trigger reusable workflow for feature branches
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '2 * * * *'  # every 2 minutes
+    - cron: '*/2 * * * *'  # every 2 minutes
 
 jobs:
   find-branches:
