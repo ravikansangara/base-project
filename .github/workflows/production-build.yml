@@ -61,7 +61,7 @@ jobs:
   # --------------------------------------------------
   invoke_workflow:
     needs: [init_build_context]
-    uses: ./.github/workflows/reusable-workflow.yml
+    uses: ./.github/workflows/reusable-workflow-build.yml
     secrets: inherit
     
     with:
