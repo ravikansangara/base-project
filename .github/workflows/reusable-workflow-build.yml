@@ -46,7 +46,6 @@ env:
   ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
   DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
   ARTIFACTORY_LINUX_RUNNER_SETUP: ${{ vars.ARTIFACTORY_LINUX_RUNNER_SETUP }}
-  ORGANIZATION_RUNNER_LABEL: ${{ vars.ORGANIZATION_RUNNER_LABEL }}
 
   # Workflow local variables
   DOCKER_IMAGE: my-image:1.0.0
@@ -59,7 +58,7 @@ jobs:
   # Starts container and registers repo-level runner
   # ───────────────────────────────────────────
   setup_runner:
-    runs-on: ${{ fromJSON(env.ORGANIZATION_RUNNER_LABEL) }}
+    runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
 
     outputs:
       label: ${{ steps.start_runner.outputs.label }}
@@ -180,7 +179,7 @@ jobs:
   remove_runner:
     if: always()
     needs: [setup_runner, build_project, upload_artifacts, email_notification]
-    runs-on: ${{ fromJSON(env.ORGANIZATION_RUNNER_LABEL) }}
+    runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
 
     steps:
       - name: Stop the Docker runner
