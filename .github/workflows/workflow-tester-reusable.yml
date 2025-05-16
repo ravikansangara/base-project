@@ -2,8 +2,6 @@ name: Trigger reusable workflow for feature branches
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/2 * * * *'  # every 2 minutes
 
 jobs:
   find-branches:
@@ -24,6 +22,6 @@ jobs:
     strategy:
       matrix:
         branch: ${{ fromJson(needs.find-branches.outputs.branches) }}
-    uses: ./.github/workflows/reusable.yml
+    uses: ./.github/workflows/reusable.yml@{{ matrix.branch }}
     with:
       branch: ${{ matrix.branch }}
