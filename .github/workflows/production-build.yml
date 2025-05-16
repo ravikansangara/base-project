@@ -33,6 +33,7 @@ jobs:
         BUILD_REF_NAME: ${{ steps.set_build_ref.outputs.build_ref }}
         REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
       run: |
+        echo "Repo URL: ${REPO_URL}"
         if ! git ls-remote --tags ${REPO_URL} | grep -q "refs/tags/${BUILD_REF_NAME}$"; then
           echo "[ERROR] Tag '${BUILD_REF_NAME}' does not exist to build."
           exit 1
