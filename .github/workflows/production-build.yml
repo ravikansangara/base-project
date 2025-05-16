@@ -1,0 +1,68 @@
+name: Production Build - Linux Project
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_ref:
+        description: "Tag name to build (e.g., v1.0.0)"
+        required: true
+
+env:
+
+  # Input parameters
+  RELEASE_TYPE: production
+  BUILD_ITERATION: 0
+  ARTIFACT_UPLOAD_REPO_NAME: product-dev-release-repo
+  BUILD_REF_NAME: ${{ inputs.build_ref }}
+  GIT_REF: refs/tags/${{ inputs.build_ref }}
+  REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+  # Organization-level secrets
+  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  WORKFLOW_CI_TOKEN: ${{ secrets.WORKFLOW_CI_TOKEN }}
+
+jobs:
+
+  # --------------------------------------------------
+  # Validates input parameters
+  # --------------------------------------------------
+  init_build_context:
+    runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
+
+    outputs:
+      build_iteration: ${{ steps.set-iteration.outputs.build_iteration }}
+
+    steps:
+    - name: Check if git tag exists
+      run: |
+        if ! git ls-remote --tags $REPO_URL | grep -q "refs/tags/$BUILD_REF_NAME$"; then
+          echo "[ERROR] Tag '$BUILD_REF_NAME' for '$RELEASE_TYPE' build does not exist. Cancelling the workflow."
+          exit 1
+        fi
+
+      # Production releases are allowed from tags like 'vX.Y.Z' only
+    - name: Validate git reference for release type
+      uses: ./.github/actions/validate-build-ref@main
+      with:
+        release: ${{ env.RELEASE_TYPE }}
+        branch_tag: ${{ env.GIT_REF }}
+
+  # --------------------------------------------------
+  # Calls the reusable workflow for building the project
+  # --------------------------------------------------
+  call_build_workflow:
+    needs: [init_build_context]
+    uses: ./.github/workflows/reusable-workflow-build.yml
+    
+    with:
+      release_type: ${{ env.RELEASE_TYPE }}
+      build_iteration: ${{ env.BUILD_ITERATION }}
+      build_ref: ${{ env.BUILD_REF_NAME }}
+      artifact_upload_repo_name: ${{ env.ARTIFACT_UPLOAD_REPO_NAME }}
+      git_ref: ${{ env.GIT_REF }}
+    
+    secrets:
+      artifactory_username: ${{ env.ARTIFACTORY_USERNAME }}
+      artifactory_password: ${{ env.ARTIFACTORY_PASSWORD }}
+      workflow_ci_token: ${{ env.WORKFLOW_CI_TOKEN }}
