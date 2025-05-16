@@ -19,4 +19,4 @@ jobs:
     - name: Print input parameters
       run: |
         echo -n "Git ref: $GITHUB_REF"
-        git describe --tags --exact-match 2>/dev/null || git branch --show-current
+        # git describe --tags --exact-match 2>/dev/null || git branch --show-current
