@@ -7,21 +7,6 @@ on:
         description: "Tag name to build (e.g., v1.0.0)"
         required: true
 
-env:
-
-  # Input parameters
-  RELEASE_TYPE: production
-  BUILD_ITERATION: 0
-  ARTIFACT_UPLOAD_REPO_NAME: product-dev-release-repo
-  BUILD_REF_NAME: ${{ inputs.build_ref }}
-  GIT_REF: refs/tags/${{ inputs.build_ref }}
-  REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-  # Organization-level secrets
-  ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-  ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
-  WORKFLOW_CI_TOKEN: ${{ secrets.WORKFLOW_CI_TOKEN }}
-
 jobs:
 
   # --------------------------------------------------
@@ -29,40 +14,59 @@ jobs:
   # --------------------------------------------------
   init_build_context:
     runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
-
     outputs:
-      build_iteration: ${{ steps.set-iteration.outputs.build_iteration }}
+      build_ref: ${{ steps.set_build_ref.outputs.build_ref }}
+      release_type: ${{ steps.set_release_type.outputs.release_type }}
+      git_ref: ${{ steps.set_git_ref.outputs.git_ref }}
+      artifact_upload_repo_name: ${{ steps.set_artifact_upload_repo_name.outputs.repo_name }}
 
     steps:
-    - name: Check if git tag exists
+
+    - name: Set branch/tag reference for build
+      id: set_build_ref
+      run: echo "build_ref=${{ inputs.build_ref }}" >> $GITHUB_OUTPUT
+
+    - name: Check for git tag existence
+      id: check_tag
+      shell: bash
+      env:
+        BUILD_REF_NAME: ${{ steps.set_build_ref.outputs.build_ref }}
+        REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
       run: |
-        if ! git ls-remote --tags $REPO_URL | grep -q "refs/tags/$BUILD_REF_NAME$"; then
-          echo "[ERROR] Tag '$BUILD_REF_NAME' for '$RELEASE_TYPE' build does not exist. Cancelling the workflow."
+        if ! git ls-remote --tags ${REPO_URL} | grep -q "refs/tags/${BUILD_REF_NAME}$"; then
+          echo "[ERROR] Tag '${BUILD_REF_NAME}' does not exist to build."
           exit 1
         fi
 
-      # Production releases are allowed from tags like 'vX.Y.Z' only
+    - name: Set git reference for the build
+      id: set_git_ref
+      run: echo "git_ref=refs/tags/${{ inputs.build_ref }}" >> $GITHUB_OUTPUT
+
+    - name: Set release type
+      id: set_release_type
+      run: echo "release_type=production" >> $GITHUB_OUTPUT
+
+    - name: Set artifact upload repo name
+      id: set_artifact_upload_repo_name
+      run: echo "repo_name=product-dev-release-repo" >> $GITHUB_OUTPUT
+
     - name: Validate git reference for release type
       uses: ./.github/actions/validate-build-ref@main
       with:
-        release: ${{ env.RELEASE_TYPE }}
-        branch_tag: ${{ env.GIT_REF }}
+        release: ${{ steps.set_release_type.outputs.release_type }}
+        branch_tag: ${{ steps.set_git_ref.outputs.git_ref }}
 
   # --------------------------------------------------
   # Calls the reusable workflow for building the project
   # --------------------------------------------------
-  call_build_workflow:
+  invoke_workflow:
     needs: [init_build_context]
-    uses: ./.github/workflows/reusable-workflow-build.yml
+    uses: ./.github/workflows/reusable-workflow.yml
+    secrets: inherit
     
     with:
-      release_type: ${{ env.RELEASE_TYPE }}
-      build_iteration: ${{ env.BUILD_ITERATION }}
-      build_ref: ${{ env.BUILD_REF_NAME }}
-      artifact_upload_repo_name: ${{ env.ARTIFACT_UPLOAD_REPO_NAME }}
-      git_ref: ${{ env.GIT_REF }}
-    
-    secrets:
-      artifactory_username: ${{ env.ARTIFACTORY_USERNAME }}
-      artifactory_password: ${{ env.ARTIFACTORY_PASSWORD }}
-      workflow_ci_token: ${{ env.WORKFLOW_CI_TOKEN }}
+      release_type: ${{ needs.init_build_context.outputs.release_type }}
+      build_iteration: 0
+      build_ref: ${{ needs.init_build_context.outputs.build_ref }}
+      artifact_upload_repo_name: ${{ needs.init_build_context.outputs.artifact_upload_repo_name }}
+      git_ref: ${{ needs.init_build_context.outputs.git_ref }}
