@@ -22,6 +22,6 @@ jobs:
     strategy:
       matrix:
         branch: ${{ fromJson(needs.find-branches.outputs.branches) }}
-    uses: ./.github/workflows/reusable.yml@main
+    uses: ./.github/workflows/reusable.yml
     with:
       branch: ${{ matrix.branch }}
