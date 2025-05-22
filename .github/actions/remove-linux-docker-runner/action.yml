@@ -1,9 +1,8 @@
 #---------------------------------------------------
 # Composite action (Remove Docker Self-hosted Runner)
 #---------------------------------------------------
-
 name: Remove Dynamic Self-hosted Linux Docker Runner
-description: Stops the Docker container and de-registers the self-hosted GitHub Actions runner
+description: Composite action to stop Docker container and de-register GitHub Actions runner
 
 inputs:
   label:
@@ -17,8 +16,10 @@ runs:
     - name: Stop and remove Docker container
       shell: bash
       run: |
-        echo "Stopping container: ${{ inputs.label }}"
-        docker container stop ${{ inputs.label }}
+        echo ""
+        echo "[INFO] Stopping container: ${{ inputs.label }}"
+        docker container stop ${{ inputs.label }} || true
 
-        echo "Running containers:"
+        echo ""
+        echo "[INFO] Running containers:"
         docker ps --format "table {{ .ID }}\t{{ .Image }}\t{{ .Names }}\t{{ .Status }}"

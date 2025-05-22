@@ -15,14 +15,15 @@ jobs:
   init_build_context:
     runs-on: ${{ fromJSON(vars.ORGANIZATION_RUNNER_LABEL) }}
     outputs:
-      build_ref: ${{ steps.set_build_ref.outputs.build_ref }}
+      build_ref_name: ${{ steps.set_build_ref.outputs.build_ref }}
       release_type: ${{ steps.set_release_type.outputs.release_type }}
+      build_iteration: ${{ steps.set_build_iteration.outputs.build_iteration }}
       git_ref: ${{ steps.set_git_ref.outputs.git_ref }}
       artifact_upload_repo_name: ${{ steps.set_artifact_upload_repo_name.outputs.repo_name }}
 
     steps:
 
-    - name: Set branch/tag reference for build
+    - name: Set branch/tag reference name for build
       id: set_build_ref
       run: echo "build_ref=${{ inputs.build_ref }}" >> $GITHUB_OUTPUT
 
@@ -37,6 +38,11 @@ jobs:
           echo "[ERROR] Tag '$BUILD_REF_NAME' does not exist to build."
           exit 1
         fi
+
+    - name: Set build iteration
+      id: set_build_iteration
+      run: echo "build_iteration=1" >> $GITHUB_OUTPUT
+      # Note: The build iteration is hardcoded to 1 for production.
 
     - name: Set git reference for the build
       id: set_git_ref
@@ -66,7 +72,7 @@ jobs:
     
     with:
       release_type: ${{ needs.init_build_context.outputs.release_type }}
-      build_iteration: 0
-      build_ref: ${{ needs.init_build_context.outputs.build_ref }}
+      build_iteration: ${{ needs.init_build_context.outputs.build_iteration }}
+      build_ref_name: ${{ needs.init_build_context.outputs.build_ref_name }}
       artifact_upload_repo_name: ${{ needs.init_build_context.outputs.artifact_upload_repo_name }}
       git_ref: ${{ needs.init_build_context.outputs.git_ref }}

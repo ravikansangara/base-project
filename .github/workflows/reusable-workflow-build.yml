@@ -10,7 +10,7 @@ on:
       build_iteration:
         required: true
         type: string
-      build_ref:
+      build_ref_name:
         required: true
         type: string
       artifact_upload_repo_name:
@@ -20,21 +20,13 @@ on:
         required: true
         type: string
         
-    secrets:
-      artifactory_username:
-        required: true
-      artifactory_password:
-        required: true
-      workflow_ci_token:
-        required: true
-
 env:
 
   # Variables passed from the workflow_call inputs
-  GIT_REF: ${{ inputs.git_ref }}
-  BUILD_REF_TYPE: ${{ inputs.build_ref_type }}
-  BUILD_REF_NAME: ${{ inputs.build_ref_name }}
   RELEASE_TYPE: ${{ inputs.release_type }}
+  BUILD_ITERATION: ${{ inputs.build_iteration }}
+  BUILD_REF_NAME: ${{ inputs.build_ref_name }}
+  GIT_REF: ${{ inputs.git_ref }}
   ARTIFACT_UPLOAD_REPO_NAME: ${{ inputs.artifact_upload_repo_name }}
 
   # Secrets passed from the workflow_call inputs
