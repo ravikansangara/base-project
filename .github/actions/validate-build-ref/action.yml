@@ -74,4 +74,4 @@ runs:
             print(f"[ERROR] Unknown release type '{release_type}'. Please check the input.")
             sys.exit(1)
 
-        print(f"[INFO] Validation successful! '{git_ref}' is a valid reference for '{release_type}' build.")
+        print(f"[INFO] Validation successful!)

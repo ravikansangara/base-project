@@ -67,7 +67,7 @@ jobs:
     steps:
     - name: Start the Docker runner
       id: start_runner
-      uses: matrix-devsecops/automation-toolkit/.github/actions/setup-linux-docker-runner@main
+      uses: ravikansangara/base-project/.github/actions/setup-linux-docker-runner@main
       with:
         docker_registry: ${{ env.DOCKER_REGISTRY }}
         docker_image: ${{ env.DOCKER_IMAGE }}
@@ -148,7 +148,7 @@ jobs:
 
     steps:
     - name: Upload artifacts to artifactory
-      uses: matrix-devsecops/automation-toolkit/.github/actions/jfrog-artifactory-upload@main
+      uses: ravikansangara/base-project/.github/actions/jfrog-artifactory-upload@main
       with:
         artifactory_url: ${{ env.ARTIFACTORY_URL }}
         artifactory_username: ${{ env.ARTIFACTORY_USERNAME }}
@@ -165,7 +165,7 @@ jobs:
 
     steps:
     - name: Send an email notification
-      uses: matrix-devsecops/automation-toolkit/.github/actions/workflow-email-notification@main
+      uses: ravikansangara/base-project/.github/actions/workflow-email-notification@main
       with:
         to: to-project-group@matrixcomsec.com
         workflow_success: ${{ needs.build_project.result == 'success' && needs.upload_artifacts.result == 'success' }}
