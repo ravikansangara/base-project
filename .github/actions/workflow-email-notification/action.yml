@@ -25,6 +25,10 @@ inputs:
     required: true
     description: "Comma-separated recipient email addresses"
 
+  build_ref_name:
+    required: true
+    description: "Build reference branch/tag name (e.g., feature/f1, v1.0.0)"
+
   workflow_success:
     required: true
     description: "Workflow status ('true' or 'false')"
@@ -57,7 +61,7 @@ runs:
         WORKFLOW_NAME: ${{ github.workflow }}
         RUN_NUMBER: ${{ github.run_number }}
         REPOSITORY: ${{ github.repository }}
-        BRANCH_TAG: ${{ github.ref_name }}
+        BRANCH_TAG: ${{ inputs.build_ref_name }}
         COMMIT_SHA: ${{ github.sha }}
       run: |
         import os

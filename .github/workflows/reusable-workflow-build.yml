@@ -159,6 +159,7 @@ jobs:
     - name: Send an email notification
       uses: ravikansangara/base-project/.github/actions/workflow-email-notification@main
       with:
+        build_ref_name: ${{ env.BUILD_REF_NAME }}
         to: to-project-group@matrixcomsec.com
         workflow_success: ${{ needs.build_project.result == 'success' && needs.upload_artifacts.result == 'success' }}
         whats_new: ${{ needs.build_project.outputs.whats_new }}
