@@ -12,4 +12,5 @@ jobs:
     - name: Message format
       run: |
         echo "::notice::Hello World!"
+        echo "::warning::Hello World!"
         echo "::error::Hello World!"
