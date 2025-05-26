@@ -27,13 +27,21 @@ jobs:
       run: |
         import os
         import subprocess
+
         try:
             ref_name = subprocess.check_output(["git", "branch", "--show-current"], text=True).strip()
+            if not ref_name:
+                raise subprocess.CalledProcessError(1, "git branch --show-current")
         except subprocess.CalledProcessError:
             try:
                 ref_name = subprocess.check_output(["git", "describe", "--tags", "--exact-match"], text=True).strip()
+                if not ref_name:
+                    raise subprocess.CalledProcessError(1, "git describe --tags --exact-match")
             except subprocess.CalledProcessError:
                 ref_name = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
+
+        if not ref_name:
+            raise SystemExit("[Error] Unable to determine build reference. Ensure the repository is checked out.")
 
         print(f"[INFO] Resolved build reference: {ref_name}")
 
