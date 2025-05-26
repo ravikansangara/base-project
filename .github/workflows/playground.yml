@@ -21,24 +21,36 @@ jobs:
         submodules: recursive
         ref: ${{ env.GIT_REF }}
 
-    - name: Get commit SHA from checked-out reference
+    - name: Get branch/tag reference
+      id: get_ref
+      shell: python
+      run: |
+        import os
+        import subprocess
+        try:
+            ref_name = subprocess.check_output(["git", "branch", "--show-current"], text=True).strip()
+        except subprocess.CalledProcessError:
+            try:
+                ref_name = subprocess.check_output(["git", "describe", "--tags", "--exact-match"], text=True).strip()
+            except subprocess.CalledProcessError:
+                ref_name = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
+
+        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+            f.write(f"git_ref_name={ref_name}\n")
+
+    - name: Get commit SHA for current build reference
       id: get_sha
       shell: python
-      env:
-        GIT_REF: ${{ env.GIT_REF }}
       run: |
         import os
         import subprocess
 
-        ref = os.environ.get("GIT_REF", "unknown")
-        
         try:
-            sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+            sha = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
         except subprocess.CalledProcessError:
-            raise SystemExit("[ERROR] Failed to get commit SHA. Ensure the repository is checked out.")
+            raise SystemExit("[Error] Failed to get commit SHA. Ensure the repository is checked out.")
 
-        print(f"[INFO] Checked-out ref: {ref}")
-        print(f"[INFO] Commit SHA: {sha}")
-        
+        print(f"[INFO] Resolved commit SHA: {sha}")
+
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
-            f.write(f"commit_sha={sha}\n")
+          f.write(f"commit_sha={sha}\n")
