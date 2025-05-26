@@ -2,15 +2,43 @@ name: Playground
 
 on:
   workflow_dispatch:
+    inputs:
+      git_ref:
+        description: "Branch or tag name to checkout"
+        required: true
+        default: main
 
 jobs:
-
   build-project:
     runs-on: ubuntu-latest
+    env:
+      GIT_REF: ${{ github.event.inputs.git_ref }}
 
     steps:
-    - name: Message format
+    - name: Checkout repository with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        ref: ${{ env.GIT_REF }}
+
+    - name: Get commit SHA from checked-out reference
+      id: get_sha
+      shell: python
+      env:
+        GIT_REF: ${{ env.GIT_REF }}
       run: |
-        echo "::notice::Hello World!"
-        echo "::warning::Hello World!"
-        echo "::error::Hello World!"
+        import os
+        import subprocess
+
+        ref = os.environ.get("GIT_REF", "unknown")
+        
+        try:
+            sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+        except subprocess.CalledProcessError:
+            raise SystemExit("[ERROR] Failed to get commit SHA. Ensure the repository is checked out.")
+
+        print(f"[INFO] Checked-out ref: {ref}")
+        print(f"[INFO] Commit SHA: {sha}")
+        
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+            f.write(f"commit_sha={sha}\n")
